@@ -93,6 +93,7 @@ a{color:#2e2560}a:hover{color:#1b1640}
     <!-- letrero de regreso -->
     <div style="position: absolute; left: 4px; top: 444px; padding: 6px 8px; background: #1b1b24; color: #f3e6c8; font-size: 8px; line-height: 10px; z-index: 2">← CALLE</div>
     <div style="position: absolute; right: 4px; top: 444px; padding: 6px 8px; background: #22437d; color: #ffffff; font-size: 8px; line-height: 10px; z-index: 2">CINE →</div>
+    <div style="position: absolute; left: 420px; top: 512px; padding: 6px 8px; background: #3a2f4a; color: #f3e6c8; font-size: 8px; line-height: 10px; z-index: 2">↓ GIMNASIO</div>
 
     <sc-if value="{{ showBarista }}" hint-placeholder-val="{{ false }}">
       <div style="position: absolute; left: 470px; top: 150px; width: 260px; padding: 10px 12px; box-sizing: border-box; background: #f3e6c8; border: 4px solid #2a1a10; font-size: 9px; line-height: 15px; color: #2a1a10; z-index: 20">{{baristaLine}}</div>
@@ -158,6 +159,13 @@ a{color:#2e2560}a:hover{color:#1b1640}
     </div>
   </sc-if>
 
+  <!-- ===== ESCENA: GIMNASIO ===== -->
+  <sc-if value="{{ inGym }}" hint-placeholder-val="{{ false }}">
+    <img src="./assets/e653036bdb94ed53fdda2510f6e96e38.png" alt="Gimnasio con vista a la ciudad" draggable="false" style="position: absolute; left: 0; top: 0; width: 960px; height: 540px; image-rendering: pixelated; pointer-events: none">
+    <div style="position: absolute; left: 4px; top: 420px; padding: 6px 8px; background: #1b1b24; color: #f3e6c8; font-size: 8px; line-height: 10px; z-index: 2">← CAFÉ</div>
+    <div style="position: absolute; left: 700px; top: 330px; padding: 6px 8px; background: #e8424b; border: 3px solid #1b1b24; color: #ffffff; font-size: 7px; line-height: 9px; z-index: 2">PRESS DE BANCA</div>
+  </sc-if>
+
   <!-- ===== ESCENA: CINE · TAQUILLA Y DULCERÍA ===== -->
   <sc-if value="{{ inLobby }}" hint-placeholder-val="{{ false }}">
     <img src="./assets/ce034a066fde0ecd51706fd6f9c1136c.png" alt="Taquilla y dulcería del cine" draggable="false" style="position: absolute; left: 0; top: 0; width: 960px; height: 540px; image-rendering: pixelated; pointer-events: none">
@@ -202,6 +210,14 @@ a{color:#2e2560}a:hover{color:#1b1640}
   <!-- ===== PERSONAJE ===== -->
   <div style="position: absolute; left: {{shadowLeft}}px; top: {{shadowTop}}px; width: {{shadowW}}px; height: {{shadowH}}px; background: rgba(0,0,0,0.28); border-radius: 50%; z-index: {{charZ}}"></div>
   <img src="{{heroSrc}}" alt="Personaje principal" draggable="false" style="position: absolute; left: {{heroLeft}}px; top: {{heroTop}}px; width: {{heroW}}px; height: {{heroH}}px; transform: scaleX({{face}}); image-rendering: pixelated; pointer-events: none; z-index: {{charZ}}">
+
+  <!-- gata Mandarina, la compañera -->
+  <sc-if value="{{ showCat }}" hint-placeholder-val="{{ false }}">
+    <img src="./assets/c2a0160e08c87598cbf352621c5441ef.png" alt="Mandarina, tu gata naranja" draggable="false" style="position: absolute; left: {{catLeft}}px; top: {{catTop}}px; width: {{catW}}px; height: {{catH}}px; transform: scaleX({{catFace}}); image-rendering: pixelated; pointer-events: none; z-index: {{catZ}}">
+    <sc-if value="{{ catMeow }}" hint-placeholder-val="{{ false }}">
+      <div style="position: absolute; left: {{catBubbleLeft}}px; top: {{catBubbleTop}}px; padding: 4px 6px; background: #ffffff; border: 3px solid #1b1b24; font-size: 7px; line-height: 8px; z-index: 20">miau</div>
+    </sc-if>
+  </sc-if>
 
   <!-- ===== HUD ===== -->
   <div style="position: absolute; left: 16px; top: 14px; padding: 8px 10px; background: #1b1b24; color: #f2f2f2; font-size: 9px; line-height: 14px; z-index: 30">{{place}}</div>
@@ -409,6 +425,45 @@ a{color:#2e2560}a:hover{color:#1b1640}
     </div>
   </sc-if>
 
+  <!-- entrenamiento: mantén presionado -->
+  <sc-if value="{{ gymOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; inset: 0; background: rgba(20,14,24,0.62); z-index: 45"></div>
+    <div style="position: absolute; left: 40px; top: 30px; width: 880px; padding: 20px; box-sizing: border-box; background: #f5ece6; border: 6px solid #1b1b24; box-shadow: 8px 8px 0 #7a3a5a; display: flex; gap: 22px; z-index: 46">
+      <div style="width: 440px; height: 352px; overflow: hidden; border: 4px solid #1b1b24; background: #1b1b24; flex: 0 0 auto">
+        <img src="./assets/cbdb7c7bf8e782a16408228be2f2472d.png" alt="Tu personaje en el press de banca" draggable="false" style="width: 440px; height: 352px; image-rendering: pixelated; transform: translateY({{benchY}}px) scale(1.04); pointer-events: none">
+      </div>
+      <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+        <span style="font-size: 13px; line-height: 18px; color: #1b1b24">Press de banca</span>
+        <span style="font-size: 8px; line-height: 14px; color: #5a4a58">Mantén presionado el botón para subir la barra. Si lo sueltas, baja. Completa 5 repeticiones.</span>
+        <div style="display: flex; justify-content: space-between; font-size: 9px; color: #1b1b24"><span>Repeticiones</span><span>{{reps}} / 5</span></div>
+        <span style="font-size: 7px; color: #5a4a58">ESTA REPETICIÓN</span>
+        <div style="height: 18px; background: #e0d0d8; border: 3px solid #1b1b24">
+          <div style="width: {{repPct}}%; height: 100%; background: {{repColor}}"></div>
+        </div>
+        <span style="font-size: 7px; color: #5a4a58">ENTRENAMIENTO</span>
+        <div style="height: 18px; background: #e0d0d8; border: 3px solid #1b1b24">
+          <div style="width: {{gymPct}}%; height: 100%; background: #f29a2a"></div>
+        </div>
+        <div style="padding: 10px; background: {{gymStatusBg}}; color: #ffffff; font-size: 8px; line-height: 14px">{{gymStatus}}</div>
+        <sc-if value="{{ gymPlaying }}" hint-placeholder-val="{{ true }}">
+          <button type="button" onPointerDown="{{ holdStart }}" onPointerUp="{{ holdEnd }}" onPointerLeave="{{ holdEnd }}" onPointerCancel="{{ holdEnd }}" style="height: 72px; background: {{holdBg}}; border: 4px solid #1b1b24; box-shadow: inset -6px -6px 0 rgba(0,0,0,0.25); font-family: 'Press Start 2P', monospace; font-size: 10px; color: #ffffff; cursor: pointer; touch-action: none; user-select: none">MANTÉN PRESIONADO</button>
+        </sc-if>
+        <sc-if value="{{ gymDone }}" hint-placeholder-val="{{ false }}">
+          <div style="display: flex; gap: 12px; align-items: center; padding: 10px; background: #ffffff; border: 4px solid #f29a2a">
+            <img src="./assets/c2a0160e08c87598cbf352621c5441ef.png" alt="Mandarina" style="width: 60px; height: 66px; image-rendering: pixelated">
+            <span style="font-size: 8px; line-height: 14px; color: #1b1b24">¡Desbloqueaste a Mandarina! Esta gata naranja te va a acompañar a todas partes.</span>
+          </div>
+        </sc-if>
+        <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: auto">
+          <sc-if value="{{ gymDone }}" hint-placeholder-val="{{ false }}">
+            <button type="button" onClick="{{ gymRestart }}" style="padding: 12px 14px; background: #e8424b; border: 4px solid #1b1b24; font-family: 'Press Start 2P', monospace; font-size: 9px; color: #ffffff; cursor: pointer">OTRA SERIE</button>
+          </sc-if>
+          <button type="button" onClick="{{ gymClose }}" style="padding: 12px 14px; background: #ffffff; border: 4px solid #1b1b24; font-family: 'Press Start 2P', monospace; font-size: 9px; color: #1b1b24; cursor: pointer">SALIR</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
   <!-- panel de la carrera -->
   <sc-if value="{{ showRunPanel }}" hint-placeholder-val="{{ false }}">
     <div style="position: absolute; inset: 0; background: rgba(10,20,30,0.5); z-index: 45"></div>
@@ -543,6 +598,16 @@ class Component extends DCLogic {
       this.obs = [];
       this.setState({ scene: 'cerro', x: 600, fy: 760, fade: 1, runState: 'intro' });
     };
+    // gimnasio: mantén presionado para completar repeticiones
+    Object.assign(this.state, { gymOpen: false, reps: 0, repP: 0, holding: false, gymDone: false, repFlashT: -10, catUnlocked: false, catX: 0, catFy: 0, catFace: 1 });
+    this.holdStart = (e) => {
+      if (e && e.preventDefault) e.preventDefault();
+      try { e.currentTarget.setPointerCapture(e.pointerId); } catch (err) {}
+      this.setState({ holding: true });
+    };
+    this.holdEnd = () => this.setState({ holding: false });
+    this.gymRestart = () => this.setState({ reps: 0, repP: 0, holding: false, gymDone: false });
+    this.gymClose = () => this.setState({ gymOpen: false, holding: false });
     this.redeemMoto = () => {
       const s = this.state;
       if (s.coins < 300 || s.hasMoto) return;
@@ -607,6 +672,9 @@ class Component extends DCLogic {
         this.setState({ menuOpen: true });
       } else if (s.scene === 'plaza') {
         this.jump();
+      } else if (s.scene === 'gym') {
+        if (s.gymDone) this.setState({ gymOpen: true, reps: 0, repP: 0, gymDone: false, holding: false });
+        else this.setState({ gymOpen: true, holding: false });
       } else if (s.scene === 'cerro' && s.hasMoto && Math.hypot(s.x - 703, s.fy - 712) < 90) {
         this.obs = [];
         this.setState({ scene: 'plaza', fade: 1, runState: 'intro' });
@@ -725,6 +793,7 @@ class Component extends DCLogic {
     if (sc === 'lobby') return 104 + (fy - 420) / 116 * 40;
     if (sc === 'sala') return 150;
     if (sc === 'mcd') return 200;
+    if (sc === 'gym') return 120 + (fy - 440) / 96 * 30;
     if (sc === 'cerro') return 55 + (fy - 520) / 750 * 105;
     return 58 + (fy - 330) / 208 * 112;
   }
@@ -735,6 +804,7 @@ class Component extends DCLogic {
     if (scene === 'lobby') return [420, 536];
     if (scene === 'sala') return [534, 534];
     if (scene === 'mcd') return [526, 538];
+    if (scene === 'gym') return [440, 536];
     if (scene === 'cerro') return [600, 1272];
     return [330, 538];
   }
@@ -743,6 +813,7 @@ class Component extends DCLogic {
     let rects = [];
     if (scene === 'street') rects = [[812, 868, 360, 386]];
     else if (scene === 'bowl') rects = [[250, 335, 395, 480], [40, 315, 470, 545], [712, 805, 388, 470], [740, 945, 470, 545], [466, 534, 482, 545]];
+    else if (scene === 'gym') rects = [[30, 395, 440, 498]];
     else if (scene === 'lobby') rects = [[0, 300, 420, 468], [330, 392, 420, 506]];
     else if (scene === 'cafe') {
       rects = [[0, 205, 470, 522]];
@@ -760,7 +831,7 @@ class Component extends DCLogic {
     let hamOpen = s.hamOpen, barOpen = s.barOpen;
     if (s.shellOpen) this.stepShell(dt);
     if (s.scene === 'plaza') { this.stepRun(dt); return; }
-    const frozen = s.menuOpen || s.tttOpen || s.shellOpen || s.memoOpen || (scene === 'sala' && s.game !== 'play');
+    const frozen = s.menuOpen || s.tttOpen || s.shellOpen || s.memoOpen || s.gymOpen || (scene === 'sala' && s.game !== 'play');
     const moving = mag > 0.15 && fade < 0.6 && !frozen;
     if (moving) {
       const h = this.heroH(fy, scene);
@@ -779,6 +850,10 @@ class Component extends DCLogic {
         scene = 'bowl'; x = 600; fy = 470; fade = 1; this.ball = null;
       } else if (scene === 'street' && x >= 952 && j.x > 0.4) {
         scene = 'cafe'; x = 40; fy = 520; fade = 1;
+      } else if (scene === 'cafe' && fy >= 535 && j.y > 0.4) {
+        scene = 'gym'; x = 520; fy = 470; fade = 1;
+      } else if (scene === 'gym' && x <= 8 && j.x < -0.4) {
+        scene = 'cafe'; x = 480; fy = 510; fade = 1;
       } else if (scene === 'cafe' && x <= 8 && j.x < -0.4) {
         scene = 'street'; x = 920; fy = 410; fade = 1;
       } else if (scene === 'cafe' && x >= 952 && j.x > 0.4) {
@@ -802,6 +877,29 @@ class Component extends DCLogic {
     if (scene === 'cerro') {
       for (const c of this.pathCoins) {
         if (!c.got && Math.abs(c.x - x) < 34 && Math.abs(c.fy - fy) < 30) { c.got = true; up.coins = (up.coins ?? s.coins) + 5; up.coinFlashT = s.t; }
+      }
+    }
+    // entrenamiento
+    if (s.gymOpen && !s.gymDone) {
+      let repP = s.repP, reps = s.reps;
+      if (s.holding) repP += (0.62 - reps * 0.06) * dt;
+      else repP = Math.max(0, repP - 0.4 * dt);
+      if (repP >= 1) { reps += 1; repP = 0; up.repFlashT = s.t; }
+      up.repP = repP; up.reps = reps;
+      if (reps >= 5) { up.gymDone = true; up.holding = false; up.catUnlocked = true; }
+    }
+    // Mandarina sigue al personaje
+    if (s.catUnlocked || up.catUnlocked) {
+      const h = this.heroH(fy, scene);
+      if (scene !== s.scene || !s.catUnlocked) {
+        up.catX = x - 60; up.catFy = fy + 6;
+      } else {
+        const behind = (face === -1 ? -1 : 1) * h * 0.55;
+        const tx = x + behind, k = Math.min(1, dt * 4);
+        const nx = s.catX + (tx - s.catX) * k;
+        up.catX = nx;
+        up.catFy = s.catFy + ((fy + 4) - s.catFy) * k;
+        if (Math.abs(nx - s.catX) > 0.15) up.catFace = nx > s.catX ? 1 : -1;
       }
     }
     if (scene !== 'street' || Math.hypot(x - 840, fy - 378) > 130) hamOpen = false;
@@ -1040,7 +1138,7 @@ class Component extends DCLogic {
   renderVals() {
     const s = this.state, sp = this.sprites();
     const street = s.scene === 'street', cafe = s.scene === 'cafe', bowl = s.scene === 'bowl';
-    const lobby = s.scene === 'lobby', sala = s.scene === 'sala', mcd = s.scene === 'mcd', cerro = s.scene === 'cerro', plaza = s.scene === 'plaza';
+    const lobby = s.scene === 'lobby', sala = s.scene === 'sala', mcd = s.scene === 'mcd', cerro = s.scene === 'cerro', plaza = s.scene === 'plaza', gym = s.scene === 'gym';
     const camY = cerro ? Math.max(0, Math.min(1280 - 540, Math.round(s.fy - 330))) : 0;
     const atDoor = this.nearDoor(s);
     const phase = s.moving ? Math.floor(s.walk * 7) % 4 : 0;
@@ -1058,6 +1156,7 @@ class Component extends DCLogic {
     const nearBarista = cafe && cx > 500 && cx < 740 && fy < 475;
     const nearCounter = lobby && cx > 470 && fy < 470;
     const nearStand = cerro && Math.hypot(cx - 525, fy - 690) < 120;
+    const nearBench = gym && cx > 600 && fy < 520;
     const nearMoto = cerro && s.hasMoto && Math.hypot(cx - 703, fy - 712) < 90;
 
     const flavorObj = this.flavorList.find((f) => f.id === (s.popcorn ? s.popcorn.flavor : s.flavor));
@@ -1073,9 +1172,14 @@ class Component extends DCLogic {
     } else if (cafe) {
       if (cx < 110) msg = '← Regresa a la calle';
       else if (cx > 850) msg = 'Sigue a la derecha para ir al cine →';
-      else if (cx > 535 && cx < 790 && fy > 478) msg = '↑ Entra al café';
+      else if (cx > 535 && cx < 790 && fy > 478 && fy < 520) msg = '↑ Entra al café';
+      else if (fy >= 520) msg = '↓ Sigue bajando para ir al gimnasio';
     } else if (mcd) {
       if (cx < 110) msg = '← Salir a la calle';
+    } else if (gym) {
+      if (cx < 110) msg = '← Regresa al café';
+      else if (nearBench) msg = s.catUnlocked ? 'Mandarina te echa porras. ¿Otra serie?' : 'Entrena en el press de banca y desbloquea una sorpresa';
+      else msg = 'Ve al press de banca para entrenar →';
     } else if (cerro) {
       if (fy > 1150) msg = 'Sube el Cerro de Jicalán y gana monedas para conseguir un premio';
       else if (nearMoto) msg = 'Súbete a tu moto y rueda por la plaza de Uruapan';
@@ -1161,6 +1265,16 @@ class Component extends DCLogic {
     if (mcd) place = 'Restaurante · caja';
     if (cerro) place = 'Cerro de Jicalán';
     if (plaza) place = 'Plaza de Uruapan';
+    if (gym) place = 'Gimnasio';
+    // gata
+    const catH = Math.round(h * 0.42), catW = Math.round(catH * 30 / 33);
+    const catMoving = Math.abs(s.catX - (s.x + (s.face === -1 ? -1 : 1) * h * 0.55)) > 6;
+    const catHop = catMoving ? -Math.round(Math.abs(Math.sin(s.t * 12)) * h * 0.06) : 0;
+    const catLeft = Math.round(s.catX - catW / 2), catTop = Math.round(s.catFy - catH + catHop - camY);
+    let gymStatus = 'Mantén presionado para subir la barra.', gymStatusBg = '#7a3a5a';
+    if (s.holding) gymStatus = '¡Empuja, empuja!';
+    if (s.t - s.repFlashT < 0.8) { gymStatus = '¡Repetición ' + s.reps + '!'; gymStatusBg = '#2f7a3a'; }
+    if (s.gymDone) { gymStatus = '¡Serie completa!'; gymStatusBg = '#2f7a3a'; }
     let runTitle = 'Rueda por la plaza', runText = 'Brinca los aguacates del camino con BRINCAR, tocando la pantalla o empujando el joystick hacia arriba. Cada 20 m te dan 1 moneda.', runStartLabel = 'ARRANCAR';
     if (s.runState === 'over') {
       runTitle = '¡Te topaste con un aguacate!';
@@ -1250,6 +1364,7 @@ class Component extends DCLogic {
     let showAction = false, actionLabel = '';
     if (plaza && s.runState === 'play') { showAction = true; actionLabel = 'BRINCAR'; }
     else if (nearMoto) { showAction = true; actionLabel = 'MONTAR'; }
+    else if (nearBench && !s.gymOpen) { showAction = true; actionLabel = 'ENTRENAR'; }
     else if (atDoor) { showAction = true; actionLabel = 'ENTRAR'; }
     else if (nearStand && !s.memoOpen) { showAction = true; actionLabel = 'JUGAR'; }
     else if (nearRat && !s.tttOpen) { showAction = true; actionLabel = 'JUGAR'; }
@@ -1268,6 +1383,21 @@ class Component extends DCLogic {
       shellStartLabel: ph === 'ready' ? 'EMPEZAR' : 'OTRA VEZ',
       shellStart: this.shellStart, shellClose: this.shellClose,
       showCafePrize: s.cafePrize && cafe,
+      inGym: gym,
+      showCat: s.catUnlocked && !plaza,
+      catLeft, catTop, catW, catH, catFace: s.catFace,
+      catZ: charZ + (s.catFy > s.fy ? 1 : -1),
+      catMeow: s.catUnlocked && !catMoving && !plaza && Math.floor(s.t) % 7 === 0,
+      catBubbleLeft: catLeft + Math.round(catW * 0.4), catBubbleTop: catTop - 22,
+      gymOpen: s.gymOpen, reps: s.reps,
+      repPct: Math.round(s.repP * 100),
+      repColor: s.repP > 0.8 ? '#e8424b' : '#f2c230',
+      gymPct: Math.min(100, Math.round((s.reps + s.repP) / 5 * 100)),
+      gymStatus, gymStatusBg,
+      gymPlaying: !s.gymDone, gymDone: s.gymDone,
+      holdBg: s.holding ? '#a82830' : '#e8424b',
+      benchY: Math.round(-s.repP * 14 + (s.holding ? Math.sin(s.t * 40) : 0)),
+      holdStart: this.holdStart, holdEnd: this.holdEnd, gymRestart: this.gymRestart, gymClose: this.gymClose,
       inPlaza: plaza,
       plazaBgX: Math.round(s.bgX),
       roadX: Math.round(s.roadX),
@@ -1358,7 +1488,7 @@ class Component extends DCLogic {
       panelTitle, panelText, startLabel,
       showExit: s.game !== 'intro',
       startGame: this.startGame, leaveSala: this.leaveSala,
-      showMsg: msg !== "" && !nearHam && !nearBarista && !s.menuOpen && !s.tttOpen && !s.shellOpen && !s.memoOpen && !plaza,
+      showMsg: msg !== "" && !nearHam && !nearBarista && !s.menuOpen && !s.tttOpen && !s.shellOpen && !s.memoOpen && !s.gymOpen && !plaza,
       msg, showAction, actionLabel,
       doAction: this.doAction,
       fade: s.fade.toFixed(2),

@@ -8,6 +8,7 @@ Videojuego en pixel art que se juega en el navegador con un joystick táctil.
 - **Restaurante**: gato (tic tac toe) contra la rata malvada; si ganas, el combo es gratis.
 - **Boliche**: tira la bola y junta puntos.
 - **Café La Lucha**: juego de los vasos con frappés; encuentra la crepa.
+- **Gimnasio** (bajando desde el café): press de banca manteniendo presionado; al completar la serie se desbloquea Mandarina, una gata naranja que te acompaña.
 - **Cine**: compra palomitas en la dulcería y esquiva los plátanos del mono en la función (con ayuda de Palomín).
 - **Cerro de Jicalán**: sube, junta monedas y gana la moto con el memorama.
 - **Plaza de Uruapan**: carrera en moto brincando aguacates.
