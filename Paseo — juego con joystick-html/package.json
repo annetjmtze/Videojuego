@@ -1,0 +1,13 @@
+{
+  "name": "paseo-pixel",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Videojuego pixel art con joystick",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

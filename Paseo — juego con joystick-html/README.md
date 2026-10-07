@@ -31,3 +31,12 @@ En un par de minutos queda en `https://<tu-usuario>.github.io/<nombre-del-repo>/
 - `index.html` — página de entrada que abre el juego.
 - `assets/` — imágenes pixeladas (fondos, personajes, objetos).
 - `support.js`, `vendor/` — el motor que dibuja el juego en el navegador; no hace falta editarlos.
+
+## Desplegar en Railway
+
+El proyecto trae `package.json` y `server.js` (un servidor de Node sin dependencias), así que Railway lo detecta como app de Node y corre `npm start`.
+
+1. Sube los cambios a GitHub.
+2. En Railway: *New Project* → *Deploy from GitHub repo* → elige el repositorio.
+3. Si los archivos del juego están dentro de una subcarpeta del repo, en *Settings* → *Root Directory* pon esa carpeta.
+4. En *Settings* → *Networking* da clic en *Generate Domain* para obtener el link público.
