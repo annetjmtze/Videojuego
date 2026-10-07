@@ -1,0 +1,1373 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Paseo pixel</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#2e2560}a:hover{color:#1b1640}
+</style>
+</helmet>
+<div style="position: relative; width: 960px; height: 540px; overflow: hidden; background: #1b1b24; font-family: 'Press Start 2P', monospace; color: #1b1b24; user-select: none; -webkit-user-select: none">
+
+  <!-- ===== ESCENA: CALLE ===== -->
+  <sc-if value="{{ inStreet }}" hint-placeholder-val="{{ true }}">
+    <img src="./assets/b19f4a6ef3accfd3b10329b1a7165eeb.png" alt="Calle con restaurante" draggable="false" style="position: absolute; left: 0; top: 0; width: 960px; height: 540px; image-rendering: pixelated; pointer-events: none">
+
+    <!-- letrero al boliche -->
+    <div style="position: absolute; left: 14px; top: 300px; width: 10px; height: 70px; background: #5a4130; z-index: 2"></div>
+    <div style="position: absolute; left: 4px; top: 292px; padding: 6px 8px; background: #2e2560; border: 3px solid #14102e; color: #ff7bb5; font-size: 8px; line-height: 10px; z-index: 2">← BOLICHE</div>
+
+    <!-- letrero al café -->
+    <div style="position: absolute; left: 936px; top: 300px; width: 10px; height: 70px; background: #5a4130; z-index: 2"></div>
+    <div style="position: absolute; right: 4px; top: 292px; padding: 6px 8px; background: #1f4a36; border: 3px solid #102a1e; color: #f3e6c8; font-size: 8px; line-height: 10px; z-index: 2">CAFÉ →</div>
+
+    <!-- letrero al cerro -->
+    <div style="position: absolute; left: 380px; top: 506px; padding: 6px 8px; background: #3f6a2a; border: 3px solid #1f3a14; color: #f3f0d8; font-size: 8px; line-height: 10px; z-index: 2">↓ CERRO DE JICALÁN</div>
+
+    <!-- neón en la ventana -->
+    <div style="position: absolute; left: 596px; top: 254px; padding: 4px 5px; border: 2px solid {{neonColor}}; color: {{neonColor}}; font-size: 7px; line-height: 8px; z-index: 2">ABIERTO</div>
+
+    <!-- palomas -->
+    <sc-for list="{{ pigeons }}" as="pg" hint-placeholder-count="2">
+      <div style="position: absolute; left: {{pg.left}}px; top: {{pg.top}}px; width: 3px; height: 3px; box-shadow: {{pg.sprite}}; z-index: {{pg.z}}"></div>
+    </sc-for>
+
+    <!-- hámster -->
+    <div style="position: absolute; left: 818px; top: 370px; width: 44px; height: 10px; background: rgba(0,0,0,0.22); border-radius: 50%; z-index: 3"></div>
+    <img src="./assets/37845dec5a00a183f68ad363595da968.png" alt="Hámster con gorro de nugget" draggable="false" style="position: absolute; left: 820px; top: {{hamTop}}px; width: 39px; height: 69px; image-rendering: pixelated; z-index: 5; pointer-events: none">
+    <sc-if value="{{ showHamTalk }}" hint-placeholder-val="{{ false }}">
+      <div style="position: absolute; left: 700px; top: 220px; width: 230px; padding: 10px 12px; box-sizing: border-box; background: #ffffff; border: 4px solid #1b1b24; font-size: 9px; line-height: 15px; z-index: 20">{{hamLine}}</div>
+    </sc-if>
+
+    <!-- coche -->
+    <sc-if value="{{ carVisible }}" hint-placeholder-val="{{ false }}">
+      <div style="position: absolute; left: {{carShadowLeft}}px; top: 494px; width: 108px; height: 10px; background: rgba(0,0,0,0.3); z-index: {{carZ}}"></div>
+      <div style="position: absolute; left: {{carLeft}}px; top: 452px; width: 4px; height: 4px; box-shadow: {{carSprite}}; z-index: {{carZ}}"></div>
+    </sc-if>
+  </sc-if>
+
+  <!-- ===== ESCENA: BOLICHE ===== -->
+  <sc-if value="{{ inBowl }}" hint-placeholder-val="{{ false }}">
+    <img src="./assets/00427dd002e77e47c40cc861d54135f9.png" alt="Interior del boliche" draggable="false" style="position: absolute; left: 0; top: 0; width: 960px; height: 540px; image-rendering: pixelated; pointer-events: none">
+
+    <!-- pantallas de marcador -->
+    <div style="position: absolute; left: 648px; top: 97px; width: 100px; height: 64px; box-sizing: border-box; background: #1d2448; border: 4px solid #0e1226; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; z-index: 2">
+      <span style="font-size: 7px; color: #8fd3ff">PUNTOS</span>
+      <span style="font-size: 14px; color: #f2c230">{{score}}</span>
+    </div>
+    <div style="position: absolute; left: 758px; top: 97px; width: 100px; height: 64px; box-sizing: border-box; background: {{screenBg}}; border: 4px solid #0e1226; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; z-index: 2">
+      <span style="font-size: 7px; color: #8fd3ff">TIRO {{throws}}</span>
+      <span style="font-size: 10px; color: {{resultColor}}">{{result}}</span>
+    </div>
+
+    <!-- bola en movimiento -->
+    <sc-if value="{{ ballVisible }}" hint-placeholder-val="{{ false }}">
+      <div style="position: absolute; left: {{ballLeft}}px; top: {{ballTop}}px; width: {{ballSize}}px; height: {{ballSize}}px; background: #d2343c; box-shadow: inset -{{ballShade}}px -{{ballShade}}px 0 #8e1e26, 0 0 0 2px #1b1b24; border-radius: 50%; z-index: {{ballZ}}"></div>
+    </sc-if>
+  </sc-if>
+
+  <!-- ===== ESCENA: CAFÉ LA LUCHA ===== -->
+  <sc-if value="{{ inCafe }}" hint-placeholder-val="{{ false }}">
+    <img src="./assets/b97191e2c97e714f918a7f631e7fb4d9.png" alt="Fachada de Café La Lucha" draggable="false" style="position: absolute; left: 0; top: 0; width: 960px; height: 540px; image-rendering: pixelated; pointer-events: none">
+
+    <!-- luz cálida de las lámparas -->
+    <sc-for list="{{ lamps }}" as="lp" hint-placeholder-count="4">
+      <div style="position: absolute; left: {{lp.left}}px; top: {{lp.top}}px; width: 36px; height: 20px; background: #ffcf7a; opacity: {{lp.op}}; border-radius: 50%; filter: blur(6px); pointer-events: none; z-index: 2"></div>
+    </sc-for>
+
+    <!-- vapor del café en la barra -->
+    <sc-for list="{{ steam }}" as="st" hint-placeholder-count="3">
+      <div style="position: absolute; left: {{st.left}}px; top: {{st.top}}px; width: 6px; height: 6px; background: #f3e6c8; opacity: {{st.op}}; z-index: 2"></div>
+    </sc-for>
+
+    <!-- letrero de regreso -->
+    <div style="position: absolute; left: 4px; top: 444px; padding: 6px 8px; background: #1b1b24; color: #f3e6c8; font-size: 8px; line-height: 10px; z-index: 2">← CALLE</div>
+    <div style="position: absolute; right: 4px; top: 444px; padding: 6px 8px; background: #22437d; color: #ffffff; font-size: 8px; line-height: 10px; z-index: 2">CINE →</div>
+
+    <sc-if value="{{ showBarista }}" hint-placeholder-val="{{ false }}">
+      <div style="position: absolute; left: 470px; top: 150px; width: 260px; padding: 10px 12px; box-sizing: border-box; background: #f3e6c8; border: 4px solid #2a1a10; font-size: 9px; line-height: 15px; color: #2a1a10; z-index: 20">{{baristaLine}}</div>
+    </sc-if>
+  </sc-if>
+
+  <!-- ===== ESCENA: DENTRO DEL RESTAURANTE ===== -->
+  <sc-if value="{{ inMcd }}" hint-placeholder-val="{{ false }}">
+    <img src="./assets/2e1ef011ab692eec9ef5909b023bfd83.png" alt="Mostrador del restaurante" draggable="false" style="position: absolute; left: 0; top: 0; width: 960px; height: 540px; image-rendering: pixelated; pointer-events: none">
+    <img src="./assets/5f7e36f581c9ac6115b415667649a8e5.png" alt="Rata malvada con gorra de cajero" draggable="false" style="position: absolute; left: 236px; top: {{ratTop}}px; width: 138px; height: 159px; image-rendering: pixelated; pointer-events: none; z-index: 3">
+    <sc-if value="{{ showRatTalk }}" hint-placeholder-val="{{ false }}">
+      <div style="position: absolute; left: 380px; top: 150px; width: 280px; padding: 10px 12px; box-sizing: border-box; background: #ffffff; border: 4px solid #1b1b24; font-size: 9px; line-height: 15px; z-index: 20">{{ratLine}}</div>
+    </sc-if>
+    <div style="position: absolute; left: 4px; top: 420px; padding: 6px 8px; background: #1b1b24; color: #f3e6c8; font-size: 8px; line-height: 10px; z-index: 2">← CALLE</div>
+  </sc-if>
+
+  <!-- ===== ESCENA: CERRO DE JICALÁN (se sube con scroll vertical) ===== -->
+  <sc-if value="{{ inCerro }}" hint-placeholder-val="{{ false }}">
+    <img src="./assets/b892e274b2d33a8214ae792e03c69d83.png" alt="Cerro de Jicalán" draggable="false" style="position: absolute; left: 0; top: {{cerroTop}}px; width: 960px; height: 1280px; image-rendering: pixelated; pointer-events: none">
+    <!-- letrero de inicio -->
+    <div style="position: absolute; left: 70px; top: {{signTop}}px; width: 10px; height: 60px; background: #5a3a20; z-index: 2"></div>
+    <div style="position: absolute; left: 20px; top: {{signBoardTop}}px; padding: 8px 10px; background: #8a5a32; border: 4px solid #3a2410; color: #fff4dc; font-size: 8px; line-height: 12px; z-index: 2">CERRO DE<br>JICALÁN ↑</div>
+    <!-- monedas del camino -->
+    <sc-for list="{{ coins }}" as="cn" hint-placeholder-count="4">
+      <div style="position: absolute; left: {{cn.left}}px; top: {{cn.top}}px; width: 28px; height: 28px; transform: scaleX({{cn.sx}}); z-index: {{cn.z}}">
+        <div style="position: absolute; left: -4px; top: -4px; width: 4px; height: 4px; box-shadow: {{coinSprite}}"></div>
+      </div>
+    </sc-for>
+    <!-- puesto del memorama en la cima -->
+    <div style="position: absolute; left: 470px; top: {{standTop}}px; width: 110px; height: 70px; z-index: {{standZ}}">
+      <div style="position: absolute; left: 0; top: 0; width: 110px; height: 34px; background: #8a5a32; border: 4px solid #3a2410; box-sizing: border-box; display: flex; align-items: center; justify-content: center; color: #fff4dc; font-size: 7px">MEMORAMA</div>
+      <div style="position: absolute; left: 10px; top: 34px; width: 8px; height: 36px; background: #5a3a20"></div>
+      <div style="position: absolute; left: 92px; top: 34px; width: 8px; height: 36px; background: #5a3a20"></div>
+    </div>
+    <sc-if value="{{ showMotoParked }}" hint-placeholder-val="{{ false }}">
+      <img src="./assets/90384d55b52bb942b3facb5f30c926af.png" alt="Tu moto" style="position: absolute; left: 640px; top: {{motoTop}}px; width: 126px; height: 69px; image-rendering: pixelated; z-index: 3">
+    </sc-if>
+  </sc-if>
+
+  <!-- ===== ESCENA: PLAZA DE URUAPAN · CARRERA EN MOTO ===== -->
+  <sc-if value="{{ inPlaza }}" hint-placeholder-val="{{ false }}">
+    <div onPointerDown="{{ tapJump }}" style="position: absolute; inset: 0; overflow: hidden; touch-action: none">
+      <div style="position: absolute; left: {{plazaBgX}}px; top: 0; width: 3840px; height: 540px; display: flex; pointer-events: none">
+        <img src="./assets/83662ab133132c3505b345782e4324c7.png" alt="Plaza de Uruapan" draggable="false" style="width: 1920px; height: 540px; image-rendering: pixelated">
+        <img src="./assets/83662ab133132c3505b345782e4324c7.png" alt="" draggable="false" style="width: 1920px; height: 540px; image-rendering: pixelated">
+      </div>
+      <div style="position: absolute; left: 0; top: 470px; width: 960px; height: 70px; background: repeating-linear-gradient(90deg, #8a7a68 0 46px, #6e6052 46px 50px); background-position: {{roadX}}px 0; border-top: 6px solid #b8a68e; box-sizing: border-box; pointer-events: none"></div>
+      <div style="position: absolute; left: 0; top: 502px; width: 960px; height: 4px; background: repeating-linear-gradient(90deg, #e8dcc0 0 40px, transparent 40px 80px); background-position: {{roadX}}px 0; pointer-events: none"></div>
+      <sc-for list="{{ avocados }}" as="av" hint-placeholder-count="2">
+        <img src="./assets/946988923b5244186c5301388eb13d5a.png" alt="Aguacate" draggable="false" style="position: absolute; left: {{av.left}}px; top: 424px; width: 54px; height: 56px; transform: rotate({{av.rot}}deg); image-rendering: pixelated; pointer-events: none; z-index: 5">
+      </sc-for>
+      <div style="position: absolute; left: 160px; top: 474px; width: {{riderShadowW}}px; height: 8px; background: rgba(0,0,0,0.3); border-radius: 50%; pointer-events: none; z-index: 5"></div>
+      <div style="position: absolute; left: 150px; top: {{riderTop}}px; width: 126px; height: 109px; transform: rotate({{riderRot}}deg); transform-origin: 63px 100px; pointer-events: none; z-index: 6">
+        <div style="position: absolute; left: 42px; top: 0; width: 46px; height: 62px; overflow: hidden">
+          <img src="./assets/4f27b6eeb4fb88254b9d21f1f8f7d74e.png" alt="Tú en la moto" style="width: 46px; height: 93px; image-rendering: pixelated">
+        </div>
+        <img src="./assets/90384d55b52bb942b3facb5f30c926af.png" alt="" style="position: absolute; left: 0; top: {{motoBob}}px; width: 126px; height: 69px; transform: scaleX(-1); image-rendering: pixelated">
+      </div>
+      <div style="position: absolute; right: 16px; top: 14px; padding: 8px 10px; background: #1b1b24; color: #f2f2f2; font-size: 9px; line-height: 14px; display: flex; gap: 12px; z-index: 30">
+        <span style="color: #f2c230">{{runMeters}} m</span>
+        <span>Récord {{runBest}} m</span>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ===== ESCENA: CINE · TAQUILLA Y DULCERÍA ===== -->
+  <sc-if value="{{ inLobby }}" hint-placeholder-val="{{ false }}">
+    <img src="./assets/ce034a066fde0ecd51706fd6f9c1136c.png" alt="Taquilla y dulcería del cine" draggable="false" style="position: absolute; left: 0; top: 0; width: 960px; height: 540px; image-rendering: pixelated; pointer-events: none">
+    <div style="position: absolute; left: 132px; top: 18px; width: 828px; display: flex; justify-content: center; align-items: center; gap: 18px; z-index: 2">
+      <span style="font-size: 36px; line-height: 40px; color: #ffffff; text-shadow: 4px 4px 0 #142a52">CINE ESTRELLA</span>
+      <span style="width: 18px; height: 18px; background: {{marquee}}"></span>
+    </div>
+    <div style="position: absolute; left: 4px; top: 470px; padding: 6px 8px; background: #1b1b24; color: #f3e6c8; font-size: 8px; line-height: 10px; z-index: 2">← CAFÉ</div>
+    <div style="position: absolute; right: 4px; top: 470px; padding: 6px 8px; background: #e8424b; color: #ffffff; font-size: 8px; line-height: 10px; z-index: 2">SALA 3 →</div>
+  </sc-if>
+
+  <!-- ===== ESCENA: SALA (FUNCIÓN) ===== -->
+  <sc-if value="{{ inSala }}" hint-placeholder-val="{{ false }}">
+    <img src="./assets/0250e9fd5226b39cc49634021b32fe8d.png" alt="Sala de cine" draggable="false" style="position: absolute; left: 0; top: 0; width: 960px; height: 540px; image-rendering: pixelated; pointer-events: none">
+    <!-- mono travieso -->
+    <div style="position: absolute; left: {{monkeyLeft}}px; top: {{monkeyTop}}px; width: 4px; height: 4px; box-shadow: {{monkeySprite}}; z-index: 10"></div>
+    <!-- plátanos -->
+    <sc-for list="{{ bananas }}" as="bn" hint-placeholder-count="2">
+      <div style="position: absolute; left: {{bn.left}}px; top: {{bn.top}}px; width: 28px; height: 28px; transform: rotate({{bn.rot}}deg); z-index: 15">
+        <div style="position: absolute; left: -4px; top: -4px; width: 4px; height: 4px; box-shadow: {{bananaSprite}}"></div>
+      </div>
+    </sc-for>
+    <!-- Palomín, el ayudante -->
+    <div style="position: absolute; left: {{helperShadowLeft}}px; top: 528px; width: 44px; height: 8px; background: rgba(0,0,0,0.35); border-radius: 50%; z-index: 13"></div>
+    <div style="position: absolute; left: {{helperLeft}}px; top: {{helperTop}}px; width: 5px; height: 5px; box-shadow: {{helperSprite}}; z-index: 13"></div>
+    <sc-if value="{{ showHelperTalk }}" hint-placeholder-val="{{ false }}">
+      <div style="position: absolute; left: {{helperBubbleLeft}}px; top: 420px; padding: 6px 8px; background: #fff4dc; border: 3px solid #3a2a1a; font-size: 8px; line-height: 10px; white-space: nowrap; z-index: 16">¡Lo tengo!</div>
+    </sc-if>
+    <!-- marcador del minijuego -->
+    <div style="position: absolute; right: 16px; top: 14px; padding: 8px 10px; background: #1b1b24; color: #f2f2f2; font-size: 9px; line-height: 14px; display: flex; gap: 12px; align-items: center; z-index: 30">
+      <span style="display: flex; gap: 4px">
+        <sc-for list="{{ hearts }}" as="hr" hint-placeholder-count="3">
+          <span style="width: 12px; height: 12px; background: {{hr.color}}"></span>
+        </sc-for>
+      </span>
+      <span>{{timeLeft}} s</span>
+      <span>Esquivados {{dodged}}</span>
+      <span style="color: #f2d27a">Palomín {{catches}}</span>
+    </div>
+  </sc-if>
+
+  <!-- ===== PERSONAJE ===== -->
+  <div style="position: absolute; left: {{shadowLeft}}px; top: {{shadowTop}}px; width: {{shadowW}}px; height: {{shadowH}}px; background: rgba(0,0,0,0.28); border-radius: 50%; z-index: {{charZ}}"></div>
+  <img src="{{heroSrc}}" alt="Personaje principal" draggable="false" style="position: absolute; left: {{heroLeft}}px; top: {{heroTop}}px; width: {{heroW}}px; height: {{heroH}}px; transform: scaleX({{face}}); image-rendering: pixelated; pointer-events: none; z-index: {{charZ}}">
+
+  <!-- ===== HUD ===== -->
+  <div style="position: absolute; left: 16px; top: 14px; padding: 8px 10px; background: #1b1b24; color: #f2f2f2; font-size: 9px; line-height: 14px; z-index: 30">{{place}}</div>
+  <sc-if value="{{ showMsg }}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; left: 50%; top: 14px; transform: translateX(-50%); padding: 10px 14px; background: #f2c230; border: 4px solid #1b1b24; font-size: 9px; line-height: 15px; white-space: nowrap; z-index: 30">{{msg}}</div>
+  </sc-if>
+
+  <!-- joystick -->
+  <div aria-label="Joystick" onPointerDown="{{ joyDown }}" onPointerMove="{{ joyMove }}" onPointerUp="{{ joyUp }}" onPointerCancel="{{ joyUp }}" style="position: absolute; left: 36px; top: 386px; width: 130px; height: 130px; border-radius: 50%; background: rgba(27,27,36,0.4); border: 4px solid rgba(27,27,36,0.7); box-sizing: border-box; touch-action: none; cursor: grab; z-index: 40">
+    <div style="position: absolute; left: {{knobLeft}}px; top: {{knobTop}}px; width: 54px; height: 54px; border-radius: 50%; background: #f2f2f2; border: 4px solid #1b1b24; box-sizing: border-box; pointer-events: none"></div>
+  </div>
+
+  <!-- botón de acción -->
+  <sc-if value="{{ showAction }}" hint-placeholder-val="{{ false }}">
+    <button type="button" aria-label="{{actionLabel}}" onClick="{{ doAction }}" style="position: absolute; right: 40px; bottom: 44px; width: 104px; height: 104px; border-radius: 50%; background: #e8424b; border: 4px solid #1b1b24; box-shadow: inset -6px -6px 0 #a82830; color: #ffffff; font-family: 'Press Start 2P', monospace; font-size: 9px; line-height: 14px; cursor: pointer; touch-action: manipulation; z-index: 40">{{actionLabel}}</button>
+  </sc-if>
+
+  <!-- palomitas compradas -->
+  <sc-if value="{{ showPopHud }}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; left: 16px; top: 52px; padding: 6px 10px 6px 6px; background: #1b1b24; color: #f2f2f2; font-size: 8px; line-height: 12px; display: flex; gap: 8px; align-items: center; z-index: 30">
+      <img src="./assets/46298e9e911390d74131216f9f447a4b.png" alt="" style="width: 26px; height: 29px; image-rendering: pixelated">
+      <span>{{popLabel}}</span>
+    </div>
+  </sc-if>
+
+  <!-- menú de palomitas -->
+  <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; inset: 0; background: rgba(10,14,30,0.6); z-index: 45"></div>
+    <div style="position: absolute; left: 150px; top: 46px; width: 660px; padding: 22px 26px; box-sizing: border-box; background: #f5f1e6; border: 6px solid #1b1b24; box-shadow: 8px 8px 0 #142a52; display: flex; flex-direction: column; gap: 16px; z-index: 46">
+      <div style="display: flex; align-items: center; gap: 14px">
+        <img src="./assets/46298e9e911390d74131216f9f447a4b.png" alt="Palomitas" style="width: 66px; height: 74px; image-rendering: pixelated">
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <span style="font-size: 14px; line-height: 18px; color: #1b1b24">Elige tus palomitas</span>
+          <span style="font-size: 8px; line-height: 12px; color: #4a4a58">La grande te da una vida extra en la función.</span>
+        </div>
+      </div>
+      <span style="font-size: 9px; color: #1b1b24">SABOR</span>
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px">
+        <sc-for list="{{ flavors }}" as="fl" hint-placeholder-count="4">
+          <button type="button" onClick="{{ fl.pick }}" style="padding: 12px 6px; background: {{fl.bg}}; border: 4px solid {{fl.border}}; font-family: 'Press Start 2P', monospace; font-size: 8px; line-height: 12px; color: #1b1b24; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px">
+            <span style="width: 22px; height: 22px; background: {{fl.color}}; border: 3px solid #1b1b24"></span>
+            {{fl.name}}
+          </button>
+        </sc-for>
+      </div>
+      <span style="font-size: 9px; color: #1b1b24">TAMAÑO</span>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px">
+        <sc-for list="{{ sizes }}" as="sz" hint-placeholder-count="3">
+          <button type="button" onClick="{{ sz.pick }}" style="padding: 12px 6px; background: {{sz.bg}}; border: 4px solid {{sz.border}}; font-family: 'Press Start 2P', monospace; font-size: 9px; line-height: 12px; color: #1b1b24; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px">
+            <img src="./assets/46298e9e911390d74131216f9f447a4b.png" alt="" style="width: {{sz.icon}}px; image-rendering: pixelated">
+            {{sz.name}}
+          </button>
+        </sc-for>
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 12px">
+        <button type="button" onClick="{{ closeMenu }}" style="padding: 12px 16px; background: #ffffff; border: 4px solid #1b1b24; font-family: 'Press Start 2P', monospace; font-size: 9px; color: #1b1b24; cursor: pointer">CERRAR</button>
+        <button type="button" onClick="{{ buy }}" style="padding: 12px 16px; background: #e8424b; border: 4px solid #1b1b24; box-shadow: inset -4px -4px 0 #a82830; font-family: 'Press Start 2P', monospace; font-size: 9px; color: #ffffff; cursor: pointer">COMPRAR</button>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- cartera -->
+  <sc-if value="{{ showWallet }}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; right: 16px; top: 14px; padding: 8px 10px; background: #1b1b24; color: #f2c230; font-size: 9px; line-height: 14px; z-index: 30">Cartera ${{money}}</div>
+  </sc-if>
+  <sc-if value="{{ showComboHud }}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; left: 16px; top: 52px; padding: 6px 10px 6px 6px; background: #1b1b24; color: #f2f2f2; font-size: 8px; line-height: 12px; display: flex; gap: 8px; align-items: center; z-index: 30">
+      <img src="./assets/1f1e4152b462b99ada79c60ad8ab2cbb.png" alt="" style="width: 30px; height: 32px; image-rendering: pixelated">
+      <span>{{comboLabel}}</span>
+    </div>
+  </sc-if>
+
+  <!-- gato (tic tac toe) contra la rata -->
+  <sc-if value="{{ tttOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; inset: 0; background: rgba(12,8,6,0.6); z-index: 45"></div>
+    <div style="position: absolute; left: 70px; top: 40px; width: 820px; padding: 22px; box-sizing: border-box; background: #f5f1e6; border: 6px solid #1b1b24; box-shadow: 8px 8px 0 #7a1e18; display: flex; gap: 24px; z-index: 46">
+      <div style="display: flex; flex-direction: column; gap: 12px; align-items: center">
+        <span style="font-size: 12px; line-height: 16px; color: #1b1b24">Gato contra la rata</span>
+        <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; padding: 6px; background: #1b1b24">
+          <sc-for list="{{ cells }}" as="cell" hint-placeholder-count="9">
+            <button type="button" aria-label="{{cell.aria}}" onClick="{{ cell.pick }}" style="width: 104px; height: 104px; background: {{cell.bg}}; border: 0; font-family: 'Press Start 2P', monospace; font-size: 40px; color: {{cell.color}}; cursor: pointer; display: flex; align-items: center; justify-content: center">{{cell.mark}}</button>
+          </sc-for>
+        </div>
+        <span style="font-size: 8px; line-height: 12px; color: #4a4a58">Tú eres X · la rata es O</span>
+      </div>
+      <div style="flex: 1; display: flex; flex-direction: column; gap: 12px; min-width: 0">
+        <div style="padding: 14px; background: #ffffff; border: 4px dashed #1b1b24; display: flex; flex-direction: column; gap: 10px">
+          <div style="display: flex; gap: 12px; align-items: center">
+            <img src="./assets/1f1e4152b462b99ada79c60ad8ab2cbb.png" alt="Combo de hamburguesa, papas y refresco" style="width: 96px; height: 102px; image-rendering: pixelated">
+            <span style="font-size: 10px; line-height: 16px; color: #1b1b24">TU ORDEN</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 8px; line-height: 12px"><span>Hamburguesa doble</span><span>$79</span></div>
+          <div style="display: flex; justify-content: space-between; font-size: 8px; line-height: 12px"><span>Papas grandes</span><span>$45</span></div>
+          <div style="display: flex; justify-content: space-between; font-size: 8px; line-height: 12px"><span>Refresco</span><span>$35</span></div>
+          <div style="display: flex; justify-content: space-between; font-size: 10px; line-height: 14px; border-top: 3px solid #1b1b24; padding-top: 8px"><span>TOTAL</span><span>{{orderTotal}}</span></div>
+        </div>
+        <div style="padding: 12px; background: {{statusBg}}; color: #ffffff; font-size: 9px; line-height: 15px">{{tttStatus}}</div>
+        <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: auto">
+          <sc-if value="{{ tttDone }}" hint-placeholder-val="{{ false }}">
+            <button type="button" onClick="{{ tttRestart }}" style="padding: 12px 14px; background: #e8424b; border: 4px solid #1b1b24; font-family: 'Press Start 2P', monospace; font-size: 9px; color: #ffffff; cursor: pointer">OTRA VEZ</button>
+          </sc-if>
+          <button type="button" onClick="{{ tttClose }}" style="padding: 12px 14px; background: #ffffff; border: 4px solid #1b1b24; font-family: 'Press Start 2P', monospace; font-size: 9px; color: #1b1b24; cursor: pointer">SALIR</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- monedas -->
+  <sc-if value="{{ showCoins }}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; right: 16px; top: 14px; padding: 6px 10px; background: #1b1b24; color: #f2c230; font-size: 9px; line-height: 14px; display: flex; gap: 8px; align-items: center; z-index: 30">
+      <span style="width: 14px; height: 14px; background: #f2c230; border: 2px solid #8a6010; border-radius: 50%"></span>
+      <span>{{coinTotal}} monedas</span>
+    </div>
+  </sc-if>
+  <sc-if value="{{ showMotoHud }}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; right: 16px; top: 50px; padding: 6px 10px 6px 6px; background: #1b1b24; color: #f2f2f2; font-size: 8px; line-height: 12px; display: flex; gap: 8px; align-items: center; z-index: 30">
+      <img src="./assets/90384d55b52bb942b3facb5f30c926af.png" alt="" style="width: 42px; height: 23px; image-rendering: pixelated">
+      <span>Moto · más rápido</span>
+    </div>
+  </sc-if>
+
+  <!-- memorama -->
+  <sc-if value="{{ memoOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; inset: 0; background: rgba(10,24,10,0.6); z-index: 45"></div>
+    <div style="position: absolute; left: 60px; top: 30px; width: 840px; padding: 20px; box-sizing: border-box; background: #fff4dc; border: 6px solid #3a2410; box-shadow: 8px 8px 0 #3f6a2a; display: flex; gap: 22px; z-index: 46">
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; padding: 8px; background: #3a2410">
+        <sc-for list="{{ memoCards }}" as="mc" hint-placeholder-count="16">
+          <button type="button" aria-label="{{mc.aria}}" onClick="{{ mc.pick }}" style="width: 98px; height: 98px; padding: 8px; box-sizing: border-box; background: {{mc.bg}}; border: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; font-family: 'Press Start 2P', monospace; font-size: 22px; color: #fff4dc">
+            <sc-if value="{{ mc.up }}" hint-placeholder-val="{{ false }}">
+              <img src="{{mc.img}}" alt="" style="max-width: 78px; max-height: 78px; image-rendering: pixelated; pointer-events: none">
+            </sc-if>
+            <sc-if value="{{ mc.down }}" hint-placeholder-val="{{ true }}">?</sc-if>
+          </button>
+        </sc-for>
+      </div>
+      <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+        <span style="font-size: 13px; line-height: 18px; color: #3a2410">Memorama del cerro</span>
+        <span style="font-size: 8px; line-height: 14px; color: #5a4130">Encuentra los 8 pares. Cada partida completa te da 100 monedas. Con 300 monedas te llevas la moto.</span>
+        <div style="display: flex; justify-content: space-between; font-size: 9px; color: #3a2410"><span>Partidas ganadas</span><span>{{memoWins}}</span></div>
+        <div style="display: flex; justify-content: space-between; font-size: 9px; color: #3a2410"><span>Movimientos</span><span>{{memoMoves}}</span></div>
+        <div style="display: flex; justify-content: space-between; font-size: 9px; color: #3a2410"><span>Pares</span><span>{{memoPairs}} / 8</span></div>
+        <div style="display: flex; flex-direction: column; gap: 8px; padding: 10px; background: #ffffff; border: 4px solid #3a2410">
+          <div style="display: flex; gap: 10px; align-items: center">
+            <img src="./assets/90384d55b52bb942b3facb5f30c926af.png" alt="Moto, el premio" style="width: 84px; height: 46px; image-rendering: pixelated">
+            <span style="font-size: 8px; line-height: 13px; color: #3a2410">Premio: moto<br>{{coinTotal}} / 300 monedas</span>
+          </div>
+          <div style="height: 14px; background: #e8dcc0; border: 3px solid #3a2410">
+            <div style="width: {{coinPct}}%; height: 100%; background: #f2c230"></div>
+          </div>
+        </div>
+        <div style="padding: 10px; background: {{memoStatusBg}}; color: #ffffff; font-size: 8px; line-height: 14px">{{memoStatus}}</div>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end; margin-top: auto">
+          <sc-if value="{{ canRedeem }}" hint-placeholder-val="{{ false }}">
+            <button type="button" onClick="{{ redeemMoto }}" style="padding: 12px 12px; background: #f2c230; border: 4px solid #3a2410; font-family: 'Press Start 2P', monospace; font-size: 8px; color: #3a2410; cursor: pointer">CANJEAR MOTO</button>
+          </sc-if>
+          <sc-if value="{{ memoCanNew }}" hint-placeholder-val="{{ false }}">
+            <button type="button" onClick="{{ memoNew }}" style="padding: 12px 12px; background: #3f6a2a; border: 4px solid #3a2410; font-family: 'Press Start 2P', monospace; font-size: 8px; color: #ffffff; cursor: pointer">NUEVA PARTIDA</button>
+          </sc-if>
+          <button type="button" onClick="{{ memoClose }}" style="padding: 12px 12px; background: #ffffff; border: 4px solid #3a2410; font-family: 'Press Start 2P', monospace; font-size: 8px; color: #3a2410; cursor: pointer">SALIR</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- premio del café -->
+  <sc-if value="{{ showCafePrize }}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; left: 16px; top: 52px; padding: 6px 10px 6px 6px; background: #1b1b24; color: #f2f2f2; font-size: 8px; line-height: 12px; display: flex; gap: 8px; align-items: center; z-index: 30">
+      <img src="./assets/10816910f0554dbc386558465cb3cc66.png" alt="" style="width: 18px; height: 29px; image-rendering: pixelated">
+      <img src="./assets/64f449516247c51fbcfd9d1dfc57a8c8.png" alt="" style="width: 28px; height: 28px; image-rendering: pixelated">
+      <span>Frappé + crepa + beso</span>
+    </div>
+  </sc-if>
+
+  <!-- juego de los vasos: ¿dónde quedó la crepa? -->
+  <sc-if value="{{ shellOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; inset: 0; background: rgba(20,12,6,0.62); z-index: 45"></div>
+    <div style="position: absolute; left: 110px; top: 24px; width: 740px; padding: 20px 30px; box-sizing: border-box; background: #f3e6c8; border: 6px solid #2a1a10; box-shadow: 8px 8px 0 #1f4a36; display: flex; flex-direction: column; align-items: center; gap: 14px; z-index: 46">
+      <span style="font-size: 13px; line-height: 18px; color: #2a1a10">¿Dónde quedó la crepa?</span>
+      <span style="font-size: 8px; line-height: 13px; color: #5a4130; text-align: center">{{shellHint}}</span>
+      <div style="position: relative; width: 680px; height: 290px; background: #1f4a36; border: 4px solid #2a1a10; box-sizing: border-box; overflow: hidden">
+        <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 40px; background: #6b3e22; border-top: 6px solid #8a5532"></div>
+        <sc-if value="{{ crepeVisible }}" hint-placeholder-val="{{ false }}">
+          <img src="./assets/64f449516247c51fbcfd9d1dfc57a8c8.png" alt="Crepa de Philadelphia con cajeta" style="position: absolute; left: {{crepeLeft}}px; top: 150px; width: 100px; height: 100px; image-rendering: pixelated; z-index: 1">
+        </sc-if>
+        <sc-for list="{{ cups }}" as="cup" hint-placeholder-count="3">
+          <button type="button" aria-label="{{cup.aria}}" onClick="{{ cup.pick }}" style="position: absolute; left: {{cup.left}}px; top: {{cup.top}}px; width: 108px; height: 174px; padding: 0; background: transparent; border: 0; cursor: {{cup.cursor}}; z-index: {{cup.z}}">
+            <img src="./assets/10816910f0554dbc386558465cb3cc66.png" alt="" style="width: 108px; height: 174px; image-rendering: pixelated; pointer-events: none">
+          </button>
+        </sc-for>
+      </div>
+      <sc-if value="{{ shellWin }}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; align-items: center; gap: 14px; padding: 12px 16px; background: #ffffff; border: 4px solid #d2342c">
+          <div style="position: relative; width: 48px; height: 42px">
+            <div style="position: absolute; left: -6px; top: {{heartTop}}px; width: 6px; height: 6px; box-shadow: {{heartSprite}}"></div>
+          </div>
+          <span style="font-size: 10px; line-height: 17px; color: #a82830">¡Hola, guapo! Te ganaste un beso, un frappé y una crepa de Philadelphia con cajeta.</span>
+        </div>
+      </sc-if>
+      <div style="display: flex; gap: 12px">
+        <sc-if value="{{ shellCanStart }}" hint-placeholder-val="{{ true }}">
+          <button type="button" onClick="{{ shellStart }}" style="padding: 12px 16px; background: #d2342c; border: 4px solid #2a1a10; font-family: 'Press Start 2P', monospace; font-size: 9px; color: #ffffff; cursor: pointer">{{shellStartLabel}}</button>
+        </sc-if>
+        <button type="button" onClick="{{ shellClose }}" style="padding: 12px 16px; background: #ffffff; border: 4px solid #2a1a10; font-family: 'Press Start 2P', monospace; font-size: 9px; color: #2a1a10; cursor: pointer">SALIR</button>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- panel de la carrera -->
+  <sc-if value="{{ showRunPanel }}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; inset: 0; background: rgba(10,20,30,0.5); z-index: 45"></div>
+    <div style="position: absolute; left: 230px; top: 110px; width: 500px; padding: 24px; box-sizing: border-box; background: #1b1b24; border: 6px solid #f2c230; color: #f2f2f2; display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; z-index: 46">
+      <img src="./assets/90384d55b52bb942b3facb5f30c926af.png" alt="" style="width: 126px; height: 69px; transform: scaleX(-1); image-rendering: pixelated">
+      <span style="font-size: 14px; line-height: 20px; color: #f2c230">{{runTitle}}</span>
+      <span style="font-size: 9px; line-height: 16px">{{runText}}</span>
+      <div style="display: flex; gap: 12px">
+        <button type="button" onClick="{{ runStart }}" style="padding: 12px 16px; background: #e8424b; border: 4px solid #f2f2f2; font-family: 'Press Start 2P', monospace; font-size: 9px; color: #ffffff; cursor: pointer">{{runStartLabel}}</button>
+        <button type="button" onClick="{{ runExit }}" style="padding: 12px 16px; background: #f2f2f2; border: 4px solid #f2f2f2; font-family: 'Press Start 2P', monospace; font-size: 9px; color: #1b1b24; cursor: pointer">SALIR</button>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- panel de la función -->
+  <sc-if value="{{ showGamePanel }}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; inset: 0; background: rgba(10,8,20,0.55); z-index: 45"></div>
+    <div style="position: absolute; left: 230px; top: 120px; width: 500px; padding: 24px; box-sizing: border-box; background: #1b1b24; border: 6px solid #f2c230; color: #f2f2f2; display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; z-index: 46">
+      <span style="font-size: 16px; line-height: 22px; color: #f2c230">{{panelTitle}}</span>
+      <span style="font-size: 9px; line-height: 16px">{{panelText}}</span>
+      <div style="display: flex; gap: 12px">
+        <button type="button" onClick="{{ startGame }}" style="padding: 12px 16px; background: #e8424b; border: 4px solid #f2f2f2; font-family: 'Press Start 2P', monospace; font-size: 9px; color: #ffffff; cursor: pointer">{{startLabel}}</button>
+        <sc-if value="{{ showExit }}" hint-placeholder-val="{{ false }}">
+          <button type="button" onClick="{{ leaveSala }}" style="padding: 12px 16px; background: #f2f2f2; border: 4px solid #f2f2f2; font-family: 'Press Start 2P', monospace; font-size: 9px; color: #1b1b24; cursor: pointer">SALIR</button>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- transición -->
+  <div style="position: absolute; inset: 0; background: #000000; opacity: {{fade}}; pointer-events: none; z-index: 50"></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"speed":{"editor":"range","default":170,"min":80,"max":320,"step":10,"unit":"px/s"},"$preview":{"width":960,"height":540}}'>
+class Component extends DCLogic {
+  constructor(...a) {
+    super(...a);
+    this.joy = { x: 0, y: 0 };
+    this.active = false;
+    this.hero = {
+      idle: './assets/4f27b6eeb4fb88254b9d21f1f8f7d74e.png',
+      a: './assets/b56f05e31d0865d5e76f7f55e41172ac.png',
+      b: './assets/086351907146c12e9c8ae7810340f37a.png'
+    };
+    this.heroRatio = 35 / 71;
+    this.hamLines = ['¡Hola! Soy Hamy, el de los nuggets.', '¿Buscas el boliche? Ve a la izquierda.', 'A la derecha está Café La Lucha.', 'Más allá del café está el cine.'];
+    this.baristaLines = ['¡Bienvenido a Café La Lucha!', 'Todo un siglo de tradición y calidad.', '¿Un café de olla? Va por la casa.', 'El cine está aquí a la derecha.'];
+    this.flavorList = [
+      { id: 'mant', name: 'Mantequilla', color: '#f2d27a' },
+      { id: 'cara', name: 'Caramelo', color: '#c8803a' },
+      { id: 'ques', name: 'Queso', color: '#f29a2a' },
+      { id: 'chil', name: 'Chile', color: '#d8442f' }
+    ];
+    this.sizeList = [
+      { id: 'ch', name: 'Chica', icon: 24 },
+      { id: 'md', name: 'Mediana', icon: 32 },
+      { id: 'gr', name: 'Grande', icon: 40 }
+    ];
+    this.pigeons = [{ x: 300, fy: 374, fly: 0 }, { x: 640, fy: 380, fly: 0 }, { x: 452, fy: 368, fly: 0 }];
+    this.ball = null;
+    this.bananas = [];
+    this.state = {
+      scene: 'street', x: 420, fy: 420, face: 1, walk: 0, moving: false, t: 0, kx: 0, ky: 0,
+      fade: 1, hamIdx: 0, hamOpen: false, barIdx: 0, barOpen: false, score: 0, throws: 0, result: 'PISTA 3', resultT: -10, carT: 1.5,
+      menuOpen: false, flavor: 'mant', size: 'md', popcorn: null,
+      game: 'intro', gTime: 0, lives: 3, dodged: 0, hurtT: 0, mx: 600, mdir: 1, throwCD: 1.2, armT: 0,
+      hx: 560, catchCD: 0, catchT: -10, catches: 0,
+      money: 500, combo: null, tttOpen: false, board: ['', '', '', '', '', '', '', '', ''], ttt: 'play', ratThinking: false
+    };
+    this.orderTotal = 159;
+    // juego de los vasos (frappés) con la crepa escondida
+    this.slotX = [170, 340, 510];
+    this.shell = { slots: [0, 1, 2], crepeCup: 1, swaps: [], cur: null, swapT: 0, phaseT: 0, picked: -1 };
+    this.state.shellOpen = false;
+    this.state.shellPhase = 'ready';
+    this.state.shellResult = null;
+    this.state.cafePrize = false;
+    // cerro de Jicalán + memorama
+    this.memoImgs = [
+      './assets/46298e9e911390d74131216f9f447a4b.png', './assets/10816910f0554dbc386558465cb3cc66.png',
+      './assets/64f449516247c51fbcfd9d1dfc57a8c8.png', './assets/1f1e4152b462b99ada79c60ad8ab2cbb.png',
+      './assets/5f7e36f581c9ac6115b415667649a8e5.png', './assets/37845dec5a00a183f68ad363595da968.png',
+      './assets/4f27b6eeb4fb88254b9d21f1f8f7d74e.png', './assets/90384d55b52bb942b3facb5f30c926af.png'
+    ];
+    this.memoNames = ['Palomitas', 'Frappé', 'Crepa', 'Combo', 'Rata', 'Hámster', 'Tú', 'Moto'];
+    this.pathCoins = [[250, 1180], [430, 1110], [320, 1020], [540, 950], [380, 870], [640, 810], [300, 760], [740, 720]].map((c) => ({ x: c[0], fy: c[1], got: false }));
+    Object.assign(this.state, {
+      coins: 0, hasMoto: false, memoOpen: false, memoCards: [], memoOpenIdx: [], memoMoves: 0, memoWins: 0, memoDone: false, memoLock: false, motoJustNow: false
+    });
+    this.memoNew = () => {
+      const deck = [];
+      for (let i = 0; i < 8; i++) { deck.push({ face: i, matched: false }); deck.push({ face: i, matched: false }); }
+      for (let i = deck.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); const t = deck[i]; deck[i] = deck[j]; deck[j] = t; }
+      clearTimeout(this.memoTimer);
+      this.setState({ memoCards: deck, memoOpenIdx: [], memoMoves: 0, memoDone: false, memoLock: false, motoJustNow: false });
+    };
+    this.memoPick = (i) => {
+      const s = this.state;
+      if (s.memoDone || s.memoLock) return;
+      const card = s.memoCards[i];
+      if (!card || card.matched || s.memoOpenIdx.indexOf(i) >= 0) return;
+      const open = s.memoOpenIdx.concat([i]);
+      if (open.length < 2) { this.setState({ memoOpenIdx: open }); return; }
+      const a = s.memoCards[open[0]], b = s.memoCards[open[1]];
+      const moves = s.memoMoves + 1;
+      if (a.face === b.face) {
+        const cards = s.memoCards.map((c, k) => (k === open[0] || k === open[1]) ? { face: c.face, matched: true } : c);
+        const done = cards.every((c) => c.matched);
+        this.setState({ memoCards: cards, memoOpenIdx: [], memoMoves: moves, memoDone: done, memoWins: s.memoWins + (done ? 1 : 0), coins: s.coins + (done ? 100 : 0) });
+      } else {
+        this.setState({ memoOpenIdx: open, memoMoves: moves, memoLock: true });
+        clearTimeout(this.memoTimer);
+        this.memoTimer = setTimeout(() => this.setState({ memoOpenIdx: [], memoLock: false }), 850);
+      }
+    };
+    this.memoClose = () => { clearTimeout(this.memoTimer); this.setState({ memoOpen: false, memoLock: false, memoOpenIdx: [] }); };
+    // carrera en moto por la plaza (estilo dinosaurio)
+    this.obs = [];
+    Object.assign(this.state, { runState: 'intro', runDist: 0, runBest: 0, runY: 0, runVy: 0, runSpeed: 340, bgX: 0, roadX: 0, runCoins: 0 });
+    this.spawnCD = 1.2;
+    this.jump = () => {
+      const s = this.state;
+      if (s.scene !== 'plaza' || s.runState !== 'play' || s.runY > 0) return;
+      this.setState({ runVy: 920 });
+    };
+    this.tapJump = (e) => { if (e && e.preventDefault) e.preventDefault(); this.jump(); };
+    this.runStart = () => {
+      this.obs = []; this.spawnCD = 1.2;
+      this.setState({ runState: 'play', runDist: 0, runY: 0, runVy: 0, runSpeed: 340, runCoins: 0 });
+    };
+    this.runExit = () => {
+      this.obs = [];
+      this.setState({ scene: 'cerro', x: 600, fy: 760, fade: 1, runState: 'intro' });
+    };
+    this.redeemMoto = () => {
+      const s = this.state;
+      if (s.coins < 300 || s.hasMoto) return;
+      this.setState({ coins: s.coins - 300, hasMoto: true, motoJustNow: true });
+    };
+    this.shellStart = () => {
+      const sh = this.shell;
+      sh.slots = [0, 1, 2];
+      sh.crepeCup = Math.floor(Math.random() * 3);
+      sh.swaps = [];
+      for (let i = 0; i < 11; i++) {
+        const a = Math.floor(Math.random() * 3);
+        const b = (a + 1 + Math.floor(Math.random() * 2)) % 3;
+        sh.swaps.push([a, b]);
+      }
+      sh.cur = null; sh.swapT = 0; sh.phaseT = 0; sh.picked = -1;
+      this.setState({ shellPhase: 'peek', shellResult: null });
+    };
+    this.shellPick = (cupId) => {
+      if (this.state.shellPhase !== 'pick') return;
+      this.shell.picked = cupId;
+      this.shell.phaseT = 0;
+      const win = cupId === this.shell.crepeCup;
+      this.setState({ shellPhase: 'reveal', shellResult: win ? 'win' : 'lose', cafePrize: this.state.cafePrize || win });
+    };
+    this.shellClose = () => this.setState({ shellOpen: false, shellPhase: 'ready', shellResult: null });
+    this.tttPick = (i) => {
+      const s = this.state;
+      if (s.ttt !== 'play' || s.ratThinking || s.board[i]) return;
+      const board = s.board.slice();
+      board[i] = 'X';
+      const r = this.tttResult(board);
+      if (r) { this.finishTtt(board, r); return; }
+      this.setState({ board, ratThinking: true });
+      clearTimeout(this.ratTimer);
+      this.ratTimer = setTimeout(() => this.ratMove(), 550);
+    };
+    this.tttRestart = () => this.setState({ board: ['', '', '', '', '', '', '', '', ''], ttt: 'play', ratThinking: false, combo: null });
+    this.tttClose = () => { clearTimeout(this.ratTimer); this.setState({ tttOpen: false, ratThinking: false }); };
+    this.joyDown = (e) => {
+      if (e.preventDefault) e.preventDefault();
+      try { e.currentTarget.setPointerCapture(e.pointerId); } catch (err) {}
+      this.active = true;
+      this.readJoy(e);
+    };
+    this.joyMove = (e) => { if (this.active) this.readJoy(e); };
+    this.joyUp = () => { this.active = false; this.joy = { x: 0, y: 0 }; this.setState({ kx: 0, ky: 0 }); };
+    this.doAction = () => {
+      const s = this.state;
+      if (s.scene === 'street' && this.nearDoor(s)) {
+        this.setState({ scene: 'mcd', x: 760, fy: 532, fade: 1 });
+      } else if (s.scene === 'mcd') {
+        if (s.ttt !== 'play') this.setState({ tttOpen: true, board: ['', '', '', '', '', '', '', '', ''], ttt: 'play', ratThinking: false, combo: null });
+        else this.setState({ tttOpen: true });
+      } else if (s.scene === 'street') {
+        if (!s.hamOpen) this.setState({ hamOpen: true, hamIdx: 0 });
+        else this.setState({ hamIdx: (s.hamIdx + 1) % this.hamLines.length });
+      } else if (s.scene === 'cafe') {
+        this.shell.slots = [0, 1, 2]; this.shell.picked = -1;
+        this.setState({ shellOpen: true, shellPhase: 'ready', shellResult: null });
+      } else if (s.scene === 'lobby') {
+        this.setState({ menuOpen: true });
+      } else if (s.scene === 'plaza') {
+        this.jump();
+      } else if (s.scene === 'cerro' && s.hasMoto && Math.hypot(s.x - 703, s.fy - 712) < 90) {
+        this.obs = [];
+        this.setState({ scene: 'plaza', fade: 1, runState: 'intro' });
+      } else if (s.scene === 'cerro') {
+        if (!s.memoCards.length || s.memoDone) this.memoNew();
+        this.setState({ memoOpen: true });
+      } else if (s.scene === 'bowl' && !this.ball) {
+        const h = this.heroH(s.fy);
+        const tx = 540 + (s.x - 540) * 0.12;
+        this.ball = { t: 0, dur: 1.5, sx: s.x + h * 0.15, sy: s.fy - h * 0.35, ex: tx, ey: 262, s0: h * 0.15 };
+      }
+    };
+    this.closeMenu = () => this.setState({ menuOpen: false });
+    this.buy = () => {
+      const s = this.state;
+      this.setState({ menuOpen: false, popcorn: { flavor: s.flavor, size: s.size } });
+    };
+    this.startGame = () => {
+      const s = this.state;
+      const extra = s.popcorn && s.popcorn.size === 'gr' ? 1 : 0;
+      this.bananas = [];
+      this.setState({ game: 'play', gTime: 0, lives: 3 + extra, dodged: 0, hurtT: 0, mx: 600, mdir: 1, throwCD: 1.4, armT: 0, x: 480, hx: 560, catchCD: 0, catchT: -10, catches: 0 });
+    };
+    this.leaveSala = () => {
+      this.bananas = [];
+      this.setState({ scene: 'lobby', x: 900, fy: 470, fade: 1, game: 'intro' });
+    };
+  }
+
+  nearDoor(s) {
+    return s.scene === 'street' && s.x > 470 && s.x < 590 && s.fy < 395;
+  }
+
+  tttResult(b) {
+    const L = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+    for (const l of L) if (b[l[0]] && b[l[0]] === b[l[1]] && b[l[1]] === b[l[2]]) return b[l[0]];
+    return b.every((c) => c) ? 'draw' : null;
+  }
+
+  minimax(b, ratTurn, depth) {
+    const r = this.tttResult(b);
+    if (r === 'O') return 10 - depth;
+    if (r === 'X') return depth - 10;
+    if (r === 'draw') return 0;
+    let best = ratTurn ? -99 : 99;
+    for (let i = 0; i < 9; i++) {
+      if (b[i]) continue;
+      b[i] = ratTurn ? 'O' : 'X';
+      const v = this.minimax(b, !ratTurn, depth + 1);
+      b[i] = '';
+      best = ratTurn ? Math.max(best, v) : Math.min(best, v);
+    }
+    return best;
+  }
+
+  ratMove() {
+    const s = this.state;
+    if (s.ttt !== 'play') return;
+    const board = s.board.slice();
+    const free = [];
+    for (let i = 0; i < 9; i++) if (!board[i]) free.push(i);
+    let move = free[0];
+    // muy difícil: juega perfecto casi siempre, se equivoca 1 de cada 8 veces
+    if (Math.random() < 0.12) {
+      move = free[Math.floor(Math.random() * free.length)];
+    } else {
+      let best = -99;
+      for (const i of free) {
+        board[i] = 'O';
+        const v = this.minimax(board, false, 1);
+        board[i] = '';
+        if (v > best) { best = v; move = i; }
+      }
+    }
+    board[move] = 'O';
+    const r = this.tttResult(board);
+    if (r) this.finishTtt(board, r);
+    else this.setState({ board, ratThinking: false });
+  }
+
+  finishTtt(board, r) {
+    const s = this.state;
+    if (r === 'X') this.setState({ board, ttt: 'win', combo: 'free', ratThinking: false });
+    else if (r === 'O') this.setState({ board, ttt: 'lose', combo: 'paid', money: s.money - this.orderTotal, ratThinking: false });
+    else this.setState({ board, ttt: 'draw', ratThinking: false });
+  }
+
+  readJoy(e) {
+    const r = e.currentTarget.getBoundingClientRect();
+    let dx = (e.clientX - (r.left + r.width / 2)) / (r.width / 2);
+    let dy = (e.clientY - (r.top + r.height / 2)) / (r.height / 2);
+    const m = Math.hypot(dx, dy);
+    if (m > 1) { dx /= m; dy /= m; }
+    this.joy = { x: dx, y: dy };
+    this.setState({ kx: dx, ky: dy });
+  }
+
+  componentDidMount() {
+    this.last = null;
+    const tick = (now) => {
+      if (this.last == null) this.last = now;
+      const dt = Math.min(0.05, (now - this.last) / 1000);
+      this.last = now;
+      this.step(dt);
+      this.raf = requestAnimationFrame(tick);
+    };
+    this.raf = requestAnimationFrame(tick);
+  }
+
+  componentWillUnmount() { cancelAnimationFrame(this.raf); clearTimeout(this.ratTimer); clearTimeout(this.memoTimer); }
+
+  heroH(fy, scene) {
+    const sc = scene || this.state.scene;
+    if (sc === 'street') return 86 + (fy - 362) / 174 * 30;
+    if (sc === 'cafe') return 128 + (fy - 425) / 111 * 18;
+    if (sc === 'lobby') return 104 + (fy - 420) / 116 * 40;
+    if (sc === 'sala') return 150;
+    if (sc === 'mcd') return 200;
+    if (sc === 'cerro') return 55 + (fy - 520) / 750 * 105;
+    return 58 + (fy - 330) / 208 * 112;
+  }
+
+  bounds(scene) {
+    if (scene === 'street') return [362, 536];
+    if (scene === 'cafe') return [425, 536];
+    if (scene === 'lobby') return [420, 536];
+    if (scene === 'sala') return [534, 534];
+    if (scene === 'mcd') return [526, 538];
+    if (scene === 'cerro') return [600, 1272];
+    return [330, 538];
+  }
+
+  blocked(scene, x, fy) {
+    let rects = [];
+    if (scene === 'street') rects = [[812, 868, 360, 386]];
+    else if (scene === 'bowl') rects = [[250, 335, 395, 480], [40, 315, 470, 545], [712, 805, 388, 470], [740, 945, 470, 545], [466, 534, 482, 545]];
+    else if (scene === 'lobby') rects = [[0, 300, 420, 468], [330, 392, 420, 506]];
+    else if (scene === 'cafe') {
+      rects = [[0, 205, 470, 522]];
+      if (fy < 478 && !(x > 535 && x < 790)) return true;
+    }
+    for (const r of rects) if (x > r[0] && x < r[1] && fy > r[2] && fy < r[3]) return true;
+    return false;
+  }
+
+  step(dt) {
+    const s = this.state, j = this.joy;
+    const mag = Math.hypot(j.x, j.y);
+    const up = {};
+    let x = s.x, fy = s.fy, face = s.face, walk = s.walk, scene = s.scene, fade = Math.max(0, s.fade - dt * 2.5);
+    let hamOpen = s.hamOpen, barOpen = s.barOpen;
+    if (s.shellOpen) this.stepShell(dt);
+    if (s.scene === 'plaza') { this.stepRun(dt); return; }
+    const frozen = s.menuOpen || s.tttOpen || s.shellOpen || s.memoOpen || (scene === 'sala' && s.game !== 'play');
+    const moving = mag > 0.15 && fade < 0.6 && !frozen;
+    if (moving) {
+      const h = this.heroH(fy, scene);
+      let persp = scene === 'bowl' ? Math.max(0.55, h / 150) : 1;
+      if (scene === 'cerro') persp = Math.max(0.6, h / 160);
+      if (s.hasMoto) persp *= 1.6;
+      const sp = (this.props.speed ?? 170) * Math.min(1, mag) * persp * (scene === 'sala' ? 1.5 : 1);
+      const b = this.bounds(scene);
+      const nx = Math.max(6, Math.min(954, x + j.x * sp * dt));
+      const ny = Math.max(b[0], Math.min(b[1], fy + j.y * sp * dt));
+      if (!this.blocked(scene, nx, fy)) x = nx;
+      if (!this.blocked(scene, x, ny)) fy = ny;
+      if (Math.abs(j.x) > 0.2) face = j.x > 0 ? -1 : 1;
+      walk += dt * Math.max(0.5, Math.min(1, mag));
+      if (scene === 'street' && x <= 8 && j.x < -0.4) {
+        scene = 'bowl'; x = 600; fy = 470; fade = 1; this.ball = null;
+      } else if (scene === 'street' && x >= 952 && j.x > 0.4) {
+        scene = 'cafe'; x = 40; fy = 520; fade = 1;
+      } else if (scene === 'cafe' && x <= 8 && j.x < -0.4) {
+        scene = 'street'; x = 920; fy = 410; fade = 1;
+      } else if (scene === 'cafe' && x >= 952 && j.x > 0.4) {
+        scene = 'lobby'; x = 60; fy = 500; fade = 1;
+      } else if (scene === 'lobby' && x <= 8 && j.x < -0.4) {
+        scene = 'cafe'; x = 920; fy = 520; fade = 1;
+      } else if (scene === 'lobby' && x >= 952 && j.x > 0.4 && s.popcorn) {
+        scene = 'sala'; x = 480; fy = 534; fade = 1; up.game = 'intro'; this.bananas = [];
+      } else if (scene === 'street' && fy >= 535 && j.y > 0.4) {
+        scene = 'cerro'; x = 300; fy = 1250; fade = 1;
+      } else if (scene === 'cerro' && fy >= 1271 && j.y > 0.4) {
+        scene = 'street'; x = 480; fy = 500; fade = 1;
+      } else if (scene === 'mcd' && x <= 8 && j.x < -0.4) {
+        scene = 'street'; x = 530; fy = 400; fade = 1;
+      } else if (scene === 'bowl' && fy >= 537 && j.y > 0.4 && !this.blocked('bowl', x, 530)) {
+        scene = 'street'; x = 40; fy = 410; fade = 1;
+      }
+    } else {
+      walk = 0;
+    }
+    if (scene === 'cerro') {
+      for (const c of this.pathCoins) {
+        if (!c.got && Math.abs(c.x - x) < 34 && Math.abs(c.fy - fy) < 30) { c.got = true; up.coins = (up.coins ?? s.coins) + 5; up.coinFlashT = s.t; }
+      }
+    }
+    if (scene !== 'street' || Math.hypot(x - 840, fy - 378) > 130) hamOpen = false;
+    if (scene !== 'cafe' || !(x > 500 && x < 740 && fy < 475)) barOpen = false;
+    for (const p of this.pigeons) {
+      const near = scene === 'street' && Math.hypot(x - p.x, fy - p.fy) < 80;
+      if (p.fly > 0) p.fly += dt;
+      else if (near) p.fly = 0.01;
+      if (p.fly > 5 && !near) p.fly = 0;
+    }
+    let carT = s.carT + dt;
+    if (carT > 9) carT = 0;
+    if (this.ball) {
+      this.ball.t += dt;
+      if (this.ball.t >= this.ball.dur) {
+        this.ball = null;
+        up.throws = s.throws + 1;
+        if (Math.random() < 0.3) { up.score = s.score + 10; up.result = '¡CHUZA!'; }
+        else { const n = 3 + Math.floor(Math.random() * 7); up.score = s.score + n; up.result = n + ' PINOS'; }
+        up.resultT = s.t;
+      }
+    }
+    if (scene === 'sala' && s.game === 'play') Object.assign(up, this.stepGame(dt, x, fy));
+    this.setState(Object.assign({ x, fy, face, walk, moving, scene, fade, hamOpen, barOpen, carT, t: s.t + dt }, up));
+  }
+
+  stepRun(dt) {
+    const s = this.state, j = this.joy;
+    const fade = Math.max(0, s.fade - dt * 2.5);
+    const kxy = { fade, t: s.t + dt };
+    if (s.runState !== 'play') { this.setState(kxy); return; }
+    let { runY, runVy, runDist, runSpeed, bgX, roadX } = s;
+    if (j.y < -0.5 && runY === 0) runVy = 920;
+    runY += runVy * dt;
+    runVy -= 2600 * dt;
+    if (runY <= 0) { runY = 0; runVy = 0; }
+    runSpeed = Math.min(780, 340 + runDist * 0.55);
+    runDist += runSpeed * dt / 40;
+    bgX = (bgX - runSpeed * 0.25 * dt) % 1920;
+    roadX = (roadX - runSpeed * dt) % 100;
+    this.spawnCD -= dt;
+    if (this.spawnCD <= 0) {
+      this.obs.push({ x: 990, rot: 0 });
+      if (runDist > 250 && Math.random() < 0.3) this.obs.push({ x: 1040, rot: 0 });
+      this.spawnCD = Math.max(0.7, (0.9 + Math.random() * 1.0) * (420 / runSpeed));
+    }
+    let hit = false;
+    for (const o of this.obs) {
+      o.x -= runSpeed * dt;
+      o.rot -= runSpeed * dt * 0.6;
+      // caja de choque: moto en x 172..262, aguacate x+8..x+46 y 44 px de alto
+      if (o.x + 46 > 178 && o.x + 8 < 258 && runY < 42) hit = true;
+    }
+    this.obs = this.obs.filter((o) => o.x > -80);
+    if (hit) {
+      const meters = Math.floor(runDist);
+      const earned = Math.floor(meters / 20);
+      this.setState(Object.assign(kxy, { runState: 'over', runY: 0, runVy: 0, runDist, runBest: Math.max(s.runBest, meters), runCoins: earned, coins: s.coins + earned }));
+      return;
+    }
+    this.setState(Object.assign(kxy, { runY, runVy, runDist, runSpeed, bgX, roadX }));
+  }
+
+  stepShell(dt) {
+    const sh = this.shell, phase = this.state.shellPhase;
+    sh.phaseT += dt;
+    if (phase === 'peek' && sh.phaseT > 1.6) {
+      sh.phaseT = 0;
+      this.state.shellPhase = 'shuffle';
+    } else if (this.state.shellPhase === 'shuffle') {
+      if (!sh.cur) {
+        if (sh.swaps.length === 0) { this.state.shellPhase = 'pick'; return; }
+        const pair = sh.swaps.shift();
+        // pair son lugares; busca qué vaso está en cada lugar
+        const a = sh.slots.indexOf(pair[0]), b = sh.slots.indexOf(pair[1]);
+        sh.cur = { a, b, from: sh.slots.slice() };
+        sh.swapT = 0;
+      }
+      sh.swapT += dt;
+      const dur = Math.max(0.26, 0.42 - (11 - sh.swaps.length) * 0.014);
+      if (sh.swapT >= dur) {
+        const c = sh.cur, sa = sh.slots[c.a];
+        sh.slots[c.a] = sh.slots[c.b];
+        sh.slots[c.b] = sa;
+        sh.cur = null;
+      } else {
+        sh.cur.p = sh.swapT / dur;
+      }
+    }
+  }
+
+  stepGame(dt, x, fy) {
+    const s = this.state;
+    const gTime = s.gTime + dt;
+    let { lives, dodged, mx, mdir, throwCD, armT } = s;
+    let hurtT = Math.max(0, s.hurtT - dt);
+    const h = this.heroH(fy, 'sala'), w = h * this.heroRatio;
+    // el mono camina por las filas de atrás
+    mx += mdir * (90 + gTime * 3) * dt;
+    if (mx > 860) { mx = 860; mdir = -1; }
+    if (mx < 300) { mx = 300; mdir = 1; }
+    armT = Math.max(0, armT - dt);
+    throwCD -= dt;
+    if (throwCD <= 0) {
+      const T = Math.max(0.9, 1.6 - gTime * 0.02);
+      const tx = x + (Math.random() * 120 - 60);
+      const sx = mx + 40, sy = 196;
+      const g = 900, ty = fy - h * 0.5;
+      this.bananas.push({ x: sx, y: sy, vx: (tx - sx) / T, vy: (ty - sy - 0.5 * g * T * T) / T, rot: 0, spin: 540 * (Math.random() < 0.5 ? -1 : 1) });
+      if (gTime > 12 && Math.random() < 0.35) {
+        const tx2 = x + (Math.random() < 0.5 ? -140 : 140);
+        this.bananas.push({ x: sx, y: sy, vx: (tx2 - sx) / T, vy: (ty - sy - 0.5 * g * T * T) / T, rot: 0, spin: -480 });
+      }
+      throwCD = Math.max(0.45, 1.25 - gTime * 0.025);
+      armT = 0.3;
+    }
+    // Palomín sigue al personaje, un poco a un lado, y atrapa plátanos
+    let { hx, catchCD, catchT, catches } = s;
+    const side = x < 480 ? 70 : -70;
+    hx += ((x + side) - hx) * Math.min(1, dt * 3.2);
+    catchCD = Math.max(0, catchCD - dt);
+    const keep = [];
+    for (const b of this.bananas) {
+      b.vy += 900 * dt;
+      b.x += b.vx * dt;
+      b.y += b.vy * dt;
+      b.rot += b.spin * dt;
+      if (catchCD === 0 && b.vy > 0 && b.y > 360 && b.y < 520 && Math.abs(b.x - hx) < 75) {
+        catchCD = 2.2; catchT = s.t; catches += 1; dodged += 1;
+        continue;
+      }
+      const hit = hurtT === 0 && b.y > fy - h * 0.92 && b.y < fy - 8 && Math.abs(b.x - x) < w * 0.45;
+      if (hit) { lives -= 1; hurtT = 1.2; continue; }
+      if (b.y > 570) { dodged += 1; continue; }
+      keep.push(b);
+    }
+    this.bananas = keep;
+    let game = 'play';
+    if (lives <= 0) { game = 'lose'; this.bananas = []; }
+    else if (gTime >= 30) { game = 'win'; this.bananas = []; }
+    return { gTime, lives, dodged, mx, mdir, throwCD, armT, hurtT, game, hx, catchCD, catchT, catches };
+  }
+
+  shadowFrom(rows, pal, P, w) {
+    const out = [];
+    for (let y = 0; y < rows.length; y++) {
+      const row = w ? rows[y].padEnd(w, '.').slice(0, w) : rows[y];
+      for (let x = 0; x < row.length; x++) {
+        const c = row[x];
+        if (c !== '.' && pal[c]) out.push(((x + 1) * P) + 'px ' + ((y + 1) * P) + 'px 0 0 ' + pal[c]);
+      }
+    }
+    return out.join(',');
+  }
+
+  sprites() {
+    if (this._cache) return this._cache;
+    const carRows = [
+      '.........KKKKKKKKKK.........',
+      '........KWWWWKWWWWWK........',
+      '.......KWwWWWKWWwWWWK.......',
+      '......KWWWWWWKWWWWWWWK......',
+      '..KKKKKKKKKKKKKKKKKKKKKKKK..',
+      '.KCCCCCCCCCCCCCCCCCCCCCCCCK.',
+      'KRCCCCCCCCCCCKCCCCCCCCCCCCYK',
+      'KCCCCCCCCCCCCKCCCCCCCCCCCCCK',
+      'KccccKKKKccccccccccccKKKKcccK',
+      '.KKKKKGGKKKKKKKKKKKKKKGGKKKK',
+      '.....KGgK............KGgK...',
+      '......KK..............KK....'
+    ];
+    const carPal = { K: '#1b1b24', W: '#bfe3ef', w: '#ffffff', C: '#3a8fa6', c: '#2a6a7c', Y: '#f2d45a', R: '#d24a3c', G: '#55565e', g: '#9a9ba3' };
+    const pigA = ['..KK....', '.KGEK...', 'KGGGGKK.', '.KGGGGGK', '..KGGGK.', '...O.O..'];
+    const pigB = ['........', '..KK....', '.KGEKKK.', 'KGGGGGGK', '.KGGGGK.', '...O.O..'];
+    const pigF = ['K.....K.', 'GK...KG.', '.GKKKG..', '..KGEK..', '..KGGK..', '...KK...'];
+    const pigPal = { K: '#3c3f4a', G: '#8a8f9c', E: '#1b1b24', O: '#e0904a' };
+    const monkeyHead = [
+      '....KKKKKK....',
+      '...KBBBBBBK...',
+      '.KKBBBBBBBBKK.',
+      'KFFKBFFFFBKFFK',
+      'KFFKFEFFEFKFFK'
+    ];
+    const monkeyIdle = monkeyHead.concat([
+      '.KKKFFFFFFKKK.',
+      '...KFFMMFFK...',
+      '....KKKKKK....',
+      '...KBBBBBBK...',
+      '.KBKBFFFFBKBK.',
+      '.KBKBFFFFBKBK.',
+      '..KKBBBBBBKK..',
+      '...KbK..KbK...',
+      '...KK....KK...'
+    ]);
+    const monkeyThrow = monkeyHead.concat([
+      '.KKKFFFFFFKKKB',
+      '...KFFMMFFK.KB',
+      '....KKKKKK.KB.',
+      '...KBBBBBBKB..',
+      '.KBKBFFFFBK...',
+      '.KBKBFFFFBK...',
+      '..KKBBBBBBK...',
+      '...KbK..KbK...',
+      '...KK....KK...'
+    ]);
+    const monkeyPal = { K: '#2a1a12', B: '#7a4a2a', b: '#5a3420', F: '#e8b98a', E: '#1b1b24', M: '#a0523a' };
+    const helper = [
+      '..KKK.KK..',
+      '.KWWWKWWK.',
+      'KWWYWWWWWK',
+      'KWWWWWYWWK',
+      'KWEWWWEWWK',
+      'KWWWMMWWWK',
+      '.KWWWWWWK.',
+      '..KYYYYK..',
+      '..KK..KK..'
+    ];
+    const helperPal = { K: '#3a2a1a', W: '#fff4dc', Y: '#f2c84a', E: '#1b1b24', M: '#c8402f' };
+    const banana = ['....KK', '...KYK', '..KYYK', '.KYYK.', 'KYyK..', '.KK...'];
+    const bananaPal = { K: '#4a3a12', Y: '#f2d24a', y: '#d8a82a' };
+    this._cache = {
+      car: this.shadowFrom(carRows, carPal, 4, 28),
+      pigA: this.shadowFrom(pigA, pigPal, 3),
+      pigB: this.shadowFrom(pigB, pigPal, 3),
+      pigF: this.shadowFrom(pigF, pigPal, 3),
+      coin: this.shadowFrom(['.KKKKK.', 'KYYYYyK', 'KYWYYyK', 'KYYYYyK', 'KYYYYyK', 'KyyyyyK', '.KKKKK.'], { K: '#8a6010', Y: '#f2c230', y: '#d89a1a', W: '#fff4b0' }, 4, 7),
+      heart: this.shadowFrom(['.KK.KK.', 'KRRKRRK', 'KRrRRRK', '.KRRRK.', '..KRK..', '...K...'], { K: '#5a1018', R: '#e8424b', r: '#ff9aa5' }, 6, 7),
+      monkeyIdle: this.shadowFrom(monkeyIdle, monkeyPal, 5, 14),
+      monkeyThrow: this.shadowFrom(monkeyThrow, monkeyPal, 5, 14),
+      banana: this.shadowFrom(banana, bananaPal, 4, 6),
+      helper: this.shadowFrom(helper, helperPal, 5, 10)
+    };
+    return this._cache;
+  }
+
+  renderVals() {
+    const s = this.state, sp = this.sprites();
+    const street = s.scene === 'street', cafe = s.scene === 'cafe', bowl = s.scene === 'bowl';
+    const lobby = s.scene === 'lobby', sala = s.scene === 'sala', mcd = s.scene === 'mcd', cerro = s.scene === 'cerro', plaza = s.scene === 'plaza';
+    const camY = cerro ? Math.max(0, Math.min(1280 - 540, Math.round(s.fy - 330))) : 0;
+    const atDoor = this.nearDoor(s);
+    const phase = s.moving ? Math.floor(s.walk * 7) % 4 : 0;
+    const key = ['idle', 'a', 'idle', 'b'][phase];
+    const cx = Math.round(s.x), fy = Math.round(s.fy);
+    const h = Math.round(this.heroH(fy));
+    const w = Math.round(h * this.heroRatio);
+    const bob = s.moving && (phase === 1 || phase === 3) ? -Math.max(2, Math.round(h / 60)) : 0;
+
+    let charZ = 6;
+    if (street) charZ = fy > 376 ? 7 : 4;
+    if (sala) charZ = 12;
+
+    const nearHam = street && Math.hypot(cx - 840, fy - 378) < 110;
+    const nearBarista = cafe && cx > 500 && cx < 740 && fy < 475;
+    const nearCounter = lobby && cx > 470 && fy < 470;
+    const nearStand = cerro && Math.hypot(cx - 525, fy - 690) < 120;
+    const nearMoto = cerro && s.hasMoto && Math.hypot(cx - 703, fy - 712) < 90;
+
+    const flavorObj = this.flavorList.find((f) => f.id === (s.popcorn ? s.popcorn.flavor : s.flavor));
+    const sizeObj = this.sizeList.find((z) => z.id === (s.popcorn ? s.popcorn.size : s.size));
+
+    let msg = '';
+    if (street) {
+      if (cx < 130) msg = '← Camina a la izquierda para entrar al boliche';
+      else if (cx > 880 && fy > 390) msg = 'Camina a la derecha para ir a Café La Lucha →';
+      else if (atDoor) msg = 'Restaurante · presiona ENTRAR';
+    } else if (bowl) {
+      msg = fy > 500 ? '↓ Baja para salir a la calle' : 'Presiona TIRAR para lanzar la bola';
+    } else if (cafe) {
+      if (cx < 110) msg = '← Regresa a la calle';
+      else if (cx > 850) msg = 'Sigue a la derecha para ir al cine →';
+      else if (cx > 535 && cx < 790 && fy > 478) msg = '↑ Entra al café';
+    } else if (mcd) {
+      if (cx < 110) msg = '← Salir a la calle';
+    } else if (cerro) {
+      if (fy > 1150) msg = 'Sube el Cerro de Jicalán y gana monedas para conseguir un premio';
+      else if (nearMoto) msg = 'Súbete a tu moto y rueda por la plaza de Uruapan';
+      else if (fy < 800 && !nearStand) msg = s.hasMoto ? 'Tu moto está estacionada junto al pino' : 'El memorama está junto al pino de la cima';
+    } else if (lobby) {
+      if (nearCounter) msg = s.popcorn ? '¡Listo! Ve a la Sala 3 →' : 'Presiona COMPRAR para elegir tus palomitas';
+      else if (cx > 820 && !s.popcorn) msg = 'Primero compra tus palomitas en la dulcería';
+      else if (s.popcorn) msg = 'La función ya va a empezar · Sala 3 →';
+      else msg = 'Acércate al mostrador de la dulcería';
+    }
+
+    const pigeons = this.pigeons.map((p, i) => {
+      let sprite = Math.floor(s.t * 2 + i) % 3 === 0 ? sp.pigB : sp.pigA;
+      let left = p.x - 12, top = p.fy - 18;
+      if (p.fly > 0) {
+        sprite = Math.floor(s.t * 10) % 2 ? sp.pigF : sp.pigA;
+        left += p.fly * 140 * (i % 2 ? -1 : 1);
+        top -= p.fly * 160;
+      }
+      return { left: left - 3, top: top - 3, sprite, z: p.fly > 0 ? 25 : (p.fy > fy ? 8 : 3) };
+    });
+
+    const carX = -130 + s.carT * 260;
+    const carVisible = street && carX < 980;
+
+    let ballVisible = false, ballLeft = 0, ballTop = 0, ballSize = 0;
+    if (bowl && this.ball) {
+      const b = this.ball, p = Math.min(1, b.t / b.dur), e = 1 - Math.pow(1 - p, 1.6);
+      const size = Math.max(5, Math.round(b.s0 * (1 - e) + 5 * e));
+      ballVisible = true;
+      ballSize = size;
+      ballLeft = Math.round(b.sx + (b.ex - b.sx) * e - size / 2);
+      ballTop = Math.round(b.sy + (b.ey - b.sy) * e - size / 2);
+    }
+    const flash = s.t - s.resultT < 2 && s.result === '¡CHUZA!';
+
+    const lamps = [[102, 118], [258, 116], [538, 140], [582, 118]].map((l, i) => ({
+      left: l[0], top: l[1], op: (0.35 + 0.12 * Math.sin(s.t * 3 + i * 1.7)).toFixed(2)
+    }));
+    const steam = [0, 1, 2].map((i) => {
+      const p = ((s.t * 0.6 + i / 3) % 1);
+      return { left: Math.round(112 + i * 8 + Math.sin(s.t * 3 + i) * 4), top: Math.round(196 - p * 40), op: (0.7 * (1 - p)).toFixed(2) };
+    });
+
+    const flavors = this.flavorList.map((f) => ({
+      name: f.name, color: f.color,
+      bg: s.flavor === f.id ? '#ffe9a8' : '#ffffff',
+      border: s.flavor === f.id ? '#e8424b' : '#1b1b24',
+      pick: () => this.setState({ flavor: f.id })
+    }));
+    const sizes = this.sizeList.map((z) => ({
+      name: z.name, icon: z.icon,
+      bg: s.size === z.id ? '#ffe9a8' : '#ffffff',
+      border: s.size === z.id ? '#e8424b' : '#1b1b24',
+      pick: () => this.setState({ size: z.id })
+    }));
+
+    // función
+    const maxLives = 3 + (s.popcorn && s.popcorn.size === 'gr' ? 1 : 0);
+    const hearts = [];
+    for (let i = 0; i < maxLives; i++) hearts.push({ color: i < s.lives ? '#e8424b' : '#4a4a58' });
+    const bananas = sala ? this.bananas.map((b) => ({ left: Math.round(b.x - 14), top: Math.round(b.y - 14), rot: Math.round(b.rot) })) : [];
+    let panelTitle = '', panelText = '', startLabel = 'EMPEZAR';
+    if (s.game === 'intro') {
+      panelTitle = '¡Empieza la función!';
+      panelText = 'Un mono travieso se coló a la sala y avienta plátanos. Muévete a los lados con el joystick y esquívalos durante 30 segundos.';
+    } else if (s.game === 'win') {
+      panelTitle = '¡Sobreviviste!';
+      panelText = 'Esquivaste ' + s.dodged + ' plátanos y tus palomitas de ' + (flavorObj ? flavorObj.name.toLowerCase() : '') + ' siguen intactas.';
+      startLabel = 'OTRA VEZ';
+    } else if (s.game === 'lose') {
+      panelTitle = '¡Te dieron!';
+      panelText = 'Esquivaste ' + s.dodged + ' plátanos antes de quedarte sin vidas.';
+      startLabel = 'OTRA VEZ';
+    }
+    const hurtBlink = sala && s.hurtT > 0 && Math.floor(s.t * 12) % 2 === 0;
+
+    let place = 'Calle · usa el joystick';
+    if (bowl) place = 'Boliche · pista 3';
+    if (cafe) place = 'Café La Lucha';
+    if (lobby) place = 'Cine · taquilla y dulcería';
+    if (sala) place = 'Sala 3 · función';
+    if (mcd) place = 'Restaurante · caja';
+    if (cerro) place = 'Cerro de Jicalán';
+    if (plaza) place = 'Plaza de Uruapan';
+    let runTitle = 'Rueda por la plaza', runText = 'Brinca los aguacates del camino con BRINCAR, tocando la pantalla o empujando el joystick hacia arriba. Cada 20 m te dan 1 moneda.', runStartLabel = 'ARRANCAR';
+    if (s.runState === 'over') {
+      runTitle = '¡Te topaste con un aguacate!';
+      runText = 'Recorriste ' + Math.floor(s.runDist) + ' m y ganaste ' + s.runCoins + ' monedas. Tu récord: ' + s.runBest + ' m.';
+      runStartLabel = 'OTRA VEZ';
+    }
+
+    // memorama
+    const memoCards = s.memoCards.map((c, i) => {
+      const up = c.matched || s.memoOpenIdx.indexOf(i) >= 0;
+      return {
+        up, down: !up,
+        img: this.memoImgs[c.face],
+        bg: c.matched ? '#f2e6a8' : (up ? '#ffffff' : '#3f6a2a'),
+        aria: up ? 'Carta: ' + this.memoNames[c.face] : 'Carta boca abajo',
+        pick: () => this.memoPick(i)
+      };
+    });
+    const memoPairs = s.memoCards.filter((c) => c.matched).length / 2;
+    let memoStatus = 'Voltea dos cartas iguales.', memoStatusBg = '#3f6a2a';
+    if (s.memoDone) { memoStatus = '¡Completaste el memorama! +100 monedas.'; memoStatusBg = '#8a6010'; }
+    if (s.coins >= 300 && !s.hasMoto) { memoStatus = '¡Ya juntaste 300 monedas! Canjea tu moto.'; memoStatusBg = '#a82830'; }
+    if (s.motoJustNow) { memoStatus = '¡La moto es tuya! Ahora te mueves más rápido por todo el pueblo.'; memoStatusBg = '#a82830'; }
+    const coinsView = cerro ? this.pathCoins.filter((c) => !c.got).map((c, i) => ({
+      left: c.x - 14, top: c.fy - 34 - camY + (Math.floor(s.t * 3 + i) % 2 ? -3 : 0),
+      sx: Math.cos(s.t * 4 + i).toFixed(2), z: c.fy > fy ? 8 : 4
+    })) : [];
+
+    // gato contra la rata
+    const nearRat = mcd && cx > 110;
+    const cells = s.board.map((m, i) => ({
+      mark: m,
+      color: m === 'X' ? '#2a5aa8' : '#d2342c',
+      bg: m ? '#f5f1e6' : '#ffffff',
+      aria: m ? 'Casilla ' + (i + 1) + ': ' + m : 'Casilla ' + (i + 1) + ' libre',
+      pick: () => this.tttPick(i)
+    }));
+    let tttStatus = 'Tu turno. Pon tu X.', statusBg = '#2a5aa8';
+    if (s.ratThinking) { tttStatus = 'La rata está pensando... je je.'; statusBg = '#7a1e18'; }
+    if (s.ttt === 'win') { tttStatus = '¡Le ganaste! Tu orden es GRATIS.'; statusBg = '#2f7a3a'; }
+    if (s.ttt === 'lose') { tttStatus = 'Ganó la rata. Te cobró el total: $' + this.orderTotal + '.'; statusBg = '#a82830'; }
+    if (s.ttt === 'draw') { tttStatus = 'Empate. La rata no suelta tu combo: ¡revancha!'; statusBg = '#6a5a20'; }
+    let ratLine = 'Je je... ¿quieres tu combo? Gánale a la rata en gato y te sale gratis. Si pierdes, pagas TODO.';
+    if (s.combo === 'free') ratLine = 'Grrr... tuviste suerte. Llévate tu combo gratis.';
+    if (s.combo === 'paid') ratLine = 'Son $' + this.orderTotal + ', gracias. Je je je.';
+
+    // Palomín
+    // vasos
+    const sh = this.shell, ph = s.shellPhase;
+    const cups = [0, 1, 2].map((i) => {
+      let cxp = this.slotX[sh.slots[i]], off = 0, z = 2;
+      if (ph === 'shuffle' && sh.cur && (i === sh.cur.a || i === sh.cur.b)) {
+        const other = i === sh.cur.a ? sh.cur.b : sh.cur.a;
+        const p = sh.cur.p || 0, e = p * p * (3 - 2 * p);
+        const x0 = this.slotX[sh.cur.from[i]], x1 = this.slotX[sh.cur.from[other]];
+        cxp = x0 + (x1 - x0) * e;
+        off = i === sh.cur.a ? -Math.sin(Math.PI * p) * 34 : Math.sin(Math.PI * p) * 8;
+        z = i === sh.cur.a ? 3 : 4;
+      }
+      let lift = 0;
+      if (ph === 'peek' && i === sh.crepeCup) {
+        const t = sh.phaseT;
+        lift = t < 0.3 ? t / 0.3 : (t > 1.25 ? Math.max(0, 1 - (t - 1.25) / 0.3) : 1);
+      }
+      if (ph === 'reveal') {
+        if (i === sh.picked) lift = Math.min(1, sh.phaseT / 0.3);
+        else if (i === sh.crepeCup && sh.phaseT > 0.7) lift = Math.min(1, (sh.phaseT - 0.7) / 0.3);
+      }
+      return {
+        left: Math.round(cxp - 54),
+        top: Math.round(76 + off - lift * 90),
+        z,
+        cursor: ph === 'pick' ? 'pointer' : 'default',
+        aria: 'Frappé ' + (sh.slots[i] + 1),
+        pick: () => this.shellPick(i)
+      };
+    });
+    let shellHint = 'La crepa se esconde bajo uno de los frappés. Fíjate bien, se van a revolver.';
+    if (ph === 'peek') shellHint = 'Mira bien dónde está la crepa...';
+    if (ph === 'shuffle') shellHint = '¡Revolviendo! No le quites el ojo.';
+    if (ph === 'pick') shellHint = '¿Debajo de cuál frappé quedó la crepa? Tócalo.';
+    if (ph === 'reveal') shellHint = s.shellResult === 'win' ? '¡La encontraste!' : 'Uy, casi. La crepa estaba en el otro frappé.';
+    const crepeVisible = ph === 'peek' || ph === 'reveal';
+
+    const helperHop = sala && s.t - s.catchT < 0.5 ? -24 : (Math.floor(s.t * 3) % 2 ? -4 : 0);
+
+    let showAction = false, actionLabel = '';
+    if (plaza && s.runState === 'play') { showAction = true; actionLabel = 'BRINCAR'; }
+    else if (nearMoto) { showAction = true; actionLabel = 'MONTAR'; }
+    else if (atDoor) { showAction = true; actionLabel = 'ENTRAR'; }
+    else if (nearStand && !s.memoOpen) { showAction = true; actionLabel = 'JUGAR'; }
+    else if (nearRat && !s.tttOpen) { showAction = true; actionLabel = 'JUGAR'; }
+    else if (nearHam) { showAction = true; actionLabel = 'HABLAR'; }
+    else if (nearBarista && !s.shellOpen) { showAction = true; actionLabel = 'JUGAR'; }
+    else if (nearCounter && !s.menuOpen) { showAction = true; actionLabel = 'COMPRAR'; }
+    else if (bowl && !this.ball) { showAction = true; actionLabel = 'TIRAR'; }
+
+    return {
+      shellOpen: s.shellOpen, cups, shellHint, crepeVisible,
+      crepeLeft: this.slotX[sh.slots[sh.crepeCup]] - 50,
+      shellWin: ph === 'reveal' && s.shellResult === 'win' && sh.phaseT > 0.4,
+      heartSprite: sp.heart,
+      heartTop: Math.floor(s.t * 3) % 2 ? -8 : -4,
+      shellCanStart: ph === 'ready' || ph === 'reveal',
+      shellStartLabel: ph === 'ready' ? 'EMPEZAR' : 'OTRA VEZ',
+      shellStart: this.shellStart, shellClose: this.shellClose,
+      showCafePrize: s.cafePrize && cafe,
+      inPlaza: plaza,
+      plazaBgX: Math.round(s.bgX),
+      roadX: Math.round(s.roadX),
+      avocados: plaza ? this.obs.map((o) => ({ left: Math.round(o.x), rot: Math.round(o.rot) })) : [],
+      riderTop: Math.round(480 - 109 - s.runY),
+      riderRot: s.runY > 0 ? -8 : 0,
+      riderShadowW: Math.max(40, Math.round(100 - s.runY * 0.25)),
+      motoBob: 40 + (s.runState === 'play' && s.runY === 0 && Math.floor(s.t * 14) % 2 ? 1 : 0),
+      runMeters: Math.floor(s.runDist), runBest: s.runBest,
+      showRunPanel: plaza && s.runState !== 'play',
+      runTitle, runText, runStartLabel,
+      runStart: this.runStart, runExit: this.runExit, tapJump: this.tapJump,
+      inCerro: cerro,
+      cerroTop: -camY,
+      signTop: 1180 - camY, signBoardTop: 1130 - camY,
+      standTop: 625 - camY, standZ: fy > 695 ? 4 : 8,
+      showMotoParked: cerro && s.hasMoto, motoTop: 640 - camY,
+      coins: coinsView, coinSprite: sp.coin,
+      showCoins: cerro, coinTotal: s.coins,
+      showMotoHud: s.hasMoto && (cerro || street),
+      memoOpen: s.memoOpen, memoCards, memoPairs, memoMoves: s.memoMoves, memoWins: s.memoWins,
+      memoStatus, memoStatusBg,
+      coinPct: Math.min(100, Math.round(s.coins / 3)),
+      canRedeem: s.coins >= 300 && !s.hasMoto,
+      memoCanNew: s.memoDone,
+      memoNew: this.memoNew, memoClose: this.memoClose, redeemMoto: this.redeemMoto,
+      inStreet: street, inBowl: bowl, inCafe: cafe, inLobby: lobby, inSala: sala, inMcd: mcd,
+      ratTop: 190 + (s.ratThinking && Math.floor(s.t * 8) % 2 ? -3 : 0),
+      showRatTalk: mcd && !s.tttOpen,
+      ratLine,
+      showWallet: street || mcd,
+      money: s.money,
+      showComboHud: !!s.combo && (street || mcd),
+      comboLabel: s.combo === 'free' ? 'Combo gratis' : 'Combo pagado',
+      tttOpen: s.tttOpen, cells, tttStatus, statusBg,
+      orderTotal: s.ttt === 'win' ? '$0' : '$' + this.orderTotal,
+      tttDone: s.ttt !== 'play',
+      tttRestart: this.tttRestart, tttClose: this.tttClose,
+      helperLeft: Math.round(s.hx) - 25 - 5,
+      helperTop: 534 - 45 + helperHop - 5,
+      helperShadowLeft: Math.round(s.hx) - 22,
+      helperSprite: sp.helper,
+      showHelperTalk: sala && s.t - s.catchT < 1,
+      helperBubbleLeft: Math.round(s.hx) - 40,
+      catches: s.catches,
+      place,
+      heroSrc: this.hero[key],
+      heroLeft: cx - Math.round(w / 2),
+      heroTop: fy - h + bob - camY,
+      heroW: hurtBlink || plaza ? 0 : w,
+      heroH: h,
+      face: s.face,
+      charZ,
+      shadowLeft: Math.round(cx - w * 0.5),
+      shadowTop: Math.round(fy - h * 0.04) - camY,
+      shadowW: plaza ? 0 : Math.round(w),
+      shadowH: Math.max(6, Math.round(h * 0.07)),
+      hamTop: 309 + (Math.floor(s.t * 2.5) % 2 ? -2 : 0),
+      showHamTalk: nearHam,
+      hamLine: s.hamOpen ? this.hamLines[s.hamIdx] : '¡Psst! Presiona HABLAR.',
+      showBarista: nearBarista,
+      baristaLine: s.cafePrize ? 'Barista: ¡Disfruta tu frappé y tu crepa, guapo!' : 'Barista: ¿Te late un juego? Encuentra la crepa bajo el frappé. Presiona JUGAR.',
+      lamps, steam,
+      neonColor: Math.floor(s.t * 1.4) % 2 ? '#ff5f7a' : '#7a2a36',
+      marquee: Math.floor(s.t * 2) % 2 ? '#f2c230' : '#e8424b',
+      pigeons, carVisible,
+      carLeft: Math.round(carX) - 4,
+      carShadowLeft: Math.round(carX) + 2,
+      carSprite: sp.car,
+      carZ: fy > 500 ? 5 : 9,
+      score: s.score, throws: s.throws, result: s.result,
+      resultColor: flash && Math.floor(s.t * 6) % 2 ? '#ffffff' : '#f2c230',
+      screenBg: flash ? '#3a1d5c' : '#1d2448',
+      ballVisible, ballLeft, ballTop, ballSize,
+      ballShade: Math.max(1, Math.round(ballSize / 5)),
+      ballZ: 3,
+      menuOpen: s.menuOpen, flavors, sizes,
+      closeMenu: this.closeMenu, buy: this.buy,
+      showPopHud: !!s.popcorn && (lobby || sala),
+      popLabel: s.popcorn ? flavorObj.name + ' · ' + sizeObj.name : '',
+      monkeyLeft: Math.round(s.mx) - 5,
+      monkeyTop: 150 + (s.armT > 0 ? -6 : (Math.floor(s.t * 4) % 2 ? -3 : 0)),
+      monkeySprite: s.armT > 0 ? sp.monkeyThrow : sp.monkeyIdle,
+      bananas, bananaSprite: sp.banana, hearts,
+      timeLeft: Math.max(0, Math.ceil(30 - s.gTime)),
+      dodged: s.dodged,
+      showGamePanel: sala && s.game !== 'play',
+      panelTitle, panelText, startLabel,
+      showExit: s.game !== 'intro',
+      startGame: this.startGame, leaveSala: this.leaveSala,
+      showMsg: msg !== "" && !nearHam && !nearBarista && !s.menuOpen && !s.tttOpen && !s.shellOpen && !s.memoOpen && !plaza,
+      msg, showAction, actionLabel,
+      doAction: this.doAction,
+      fade: s.fade.toFixed(2),
+      knobLeft: 34 + Math.round(s.kx * 38),
+      knobTop: 34 + Math.round(s.ky * 38),
+      joyDown: this.joyDown, joyMove: this.joyMove, joyUp: this.joyUp
+    };
+  }
+}
+</script>
+</body>
+</html>
