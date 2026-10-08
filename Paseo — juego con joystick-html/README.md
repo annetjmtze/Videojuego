@@ -12,6 +12,7 @@ Videojuego en pixel art que se juega en el navegador con un joystick táctil.
 - **Café La Lucha**: juego de los vasos con frappés; encuentra la crepa.
 - **Gimnasio** (bajando desde el café): press de banca manteniendo presionado; al completar la serie se desbloquea Mandarina, una gata naranja que te acompaña.
 - **Parque La Pinera**: columpio (impulsa en el momento justo) y resbaladilla.
+- **Plaza Ágora**: fuente de los deseos (memoria de luces, hasta 40 monedas) y cazador de ofertas (1 moneda por bolsa, +10 si atrapas 20).
 - **Cine**: compra palomitas en la dulcería y esquiva los plátanos del mono en la función (con ayuda de Palomín).
 - **Cerro de Jicalán**: sube, junta monedas y gana la moto con el memorama.
 - **Plaza de Uruapan**: carrera en moto brincando aguacates.
@@ -19,6 +20,10 @@ Videojuego en pixel art que se juega en el navegador con un joystick táctil.
 ## Monedas y terreno
 
 Cada minijuego da monedas: memorama 100, columpio 30, gato 30 (empate 5), función 25, vasos 20, gimnasio 15, boliche 2–5, resbaladilla 3 y la carrera 1 por cada 20 m. Con 300 se canjea la moto y con 600 se compra un terreno desde el mapa.
+
+## Guardado del avance
+
+El juego guarda solo (monedas, moto, gata, terreno, récords) en el navegador de cada jugador. Si vuelven a abrir el link en el mismo navegador, siguen donde se quedaron. En el mapa hay un botón para borrar el avance.
 
 ## Cómo jugarlo en tu computadora
 

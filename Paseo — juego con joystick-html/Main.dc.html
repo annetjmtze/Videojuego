@@ -54,6 +54,10 @@ a{color:#2e2560}a:hover{color:#1b1640}
             <button type="button" onClick="{{ buyTerreno }}" style="padding: 8px; background: #6a8a2a; border: 3px solid #1b1b24; font-family: 'Press Start 2P', monospace; font-size: 7px; color: #ffffff; cursor: pointer">COMPRAR TERRENO</button>
           </sc-if>
         </div>
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px">
+          <span style="font-size: 6px; line-height: 9px; color: #5a4a3a">{{saveNote}}</span>
+          <button type="button" onClick="{{ resetProgress }}" style="padding: 5px 6px; background: transparent; border: 2px solid #a82830; font-family: 'Press Start 2P', monospace; font-size: 6px; line-height: 8px; color: #a82830; cursor: pointer; flex: 0 0 auto">{{resetLabel}}</button>
+        </div>
         <sc-if value="{{ showMapNote }}" hint-placeholder-val="{{ false }}">
           <div style="padding: 8px; background: #a82830; color: #ffffff; font-size: 7px; line-height: 12px">{{mapNote}}</div>
         </sc-if>
@@ -214,6 +218,32 @@ a{color:#2e2560}a:hover{color:#1b1640}
     <img src="./assets/7f2f8e4ba5c527e81140047c6a1cf117.png" alt="Resbaladilla" draggable="false" style="position: absolute; left: 40px; top: 302px; width: 140px; height: 168px; image-rendering: pixelated; pointer-events: none; z-index: {{slideZ}}">
     <img src="./assets/79c7630786cfc65adbfc877649342221.png" alt="Columpio" draggable="false" style="position: absolute; left: 770px; top: 282px; width: 130px; height: 198px; image-rendering: pixelated; pointer-events: none; z-index: {{swingZ}}">
     <div style="position: absolute; left: 380px; top: 470px; padding: 6px 8px; background: #2f6a3a; color: #ffffff; font-size: 8px; line-height: 10px; z-index: 2">PARQUE LA PINERA</div>
+  </sc-if>
+
+  <!-- ===== ÁGORA: LLEGADA (vista aérea) ===== -->
+  <sc-if value="{{ inAgoraOut }}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; inset: 0; background: #2a1e2e; display: flex">
+      <img src="./assets/0e997a185186024499ec2d1877cf648b.png" alt="Centro comercial Ágora visto desde arriba" draggable="false" style="width: 348px; height: 540px; object-fit: cover; image-rendering: pixelated; flex: 0 0 auto">
+      <div style="flex: 1; padding: 70px 48px; box-sizing: border-box; display: flex; flex-direction: column; gap: 18px; color: #f5ecd8">
+        <span style="font-size: 26px; line-height: 34px; color: #f2c230">Plaza Ágora</span>
+        <span style="font-size: 10px; line-height: 18px">El centro comercial de Uruapan. Adentro, junto a la fuente, hay dos minijuegos:</span>
+        <span style="font-size: 9px; line-height: 16px">· Fuente de los deseos: repite la secuencia de luces. Hasta 40 monedas.</span>
+        <span style="font-size: 9px; line-height: 16px">· Cazador de ofertas: atrapa las bolsas que caen. 1 moneda por bolsa.</span>
+        <div style="display: flex; gap: 12px; margin-top: 12px">
+          <button type="button" onClick="{{ enterAgora }}" style="padding: 14px 18px; background: #e8424b; border: 4px solid #f5ecd8; font-family: 'Press Start 2P', monospace; font-size: 10px; color: #ffffff; cursor: pointer">ENTRAR</button>
+          <button type="button" onClick="{{ goMap }}" style="padding: 14px 18px; background: #f5ecd8; border: 4px solid #f5ecd8; font-family: 'Press Start 2P', monospace; font-size: 10px; color: #1b1b24; cursor: pointer">MAPA</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ===== ÁGORA: PLAZA DE LA FUENTE ===== -->
+  <sc-if value="{{ inAgora }}" hint-placeholder-val="{{ false }}">
+    <img src="./assets/b375b6dfad1aeb1d6b599c3127587af1.png" alt="Plaza Ágora con la fuente" draggable="false" style="position: absolute; left: 0; top: 0; width: 960px; height: 540px; image-rendering: pixelated; pointer-events: none">
+    <sc-for list="{{ jets }}" as="jt" hint-placeholder-count="6">
+      <div style="position: absolute; left: {{jt.left}}px; top: {{jt.top}}px; width: 14px; height: {{jt.h}}px; background: #ff7ad8; opacity: {{jt.op}}; pointer-events: none; z-index: 2"></div>
+    </sc-for>
+    <div style="position: absolute; left: 380px; top: 500px; padding: 6px 8px; background: #2a1e2e; color: #f2c230; font-size: 8px; line-height: 10px; z-index: 2">PLAZA ÁGORA</div>
   </sc-if>
 
   <!-- ===== ESCENA: CINE · TAQUILLA Y DULCERÍA ===== -->
@@ -571,6 +601,54 @@ a{color:#2e2560}a:hover{color:#1b1640}
     </div>
   </sc-if>
 
+  <!-- Ágora: fuente de los deseos (memoria de luces) -->
+  <sc-if value="{{ simonOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; inset: 0; background: rgba(20,10,30,0.66); z-index: 45"></div>
+    <div style="position: absolute; left: 70px; top: 30px; width: 820px; padding: 20px; box-sizing: border-box; background: #2a1e2e; border: 6px solid #ff7ad8; color: #f5ecd8; display: flex; flex-direction: column; align-items: center; gap: 14px; z-index: 46">
+      <span style="font-size: 14px; line-height: 20px; color: #ff9ae0">Fuente de los deseos</span>
+      <span style="font-size: 8px; line-height: 14px; text-align: center">Mira qué chorros se encienden y repítelos en el mismo orden. Cada ronda agrega uno más. Llega a la ronda 6 para ganar 40 monedas.</span>
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; padding: 18px; background: #1d3a4a; border: 4px solid #0e1e28">
+        <sc-for list="{{ simonPads }}" as="sp" hint-placeholder-count="4">
+          <button type="button" aria-label="Chorro {{sp.n}}" onClick="{{ sp.press }}" style="width: 130px; height: 150px; padding: 0; background: {{sp.bg}}; border: 4px solid #0e1e28; box-shadow: {{sp.glow}}; cursor: pointer; display: flex; align-items: flex-end; justify-content: center">
+            <div style="width: 34px; height: {{sp.jet}}px; background: {{sp.jetColor}}; margin-bottom: 14px"></div>
+          </button>
+        </sc-for>
+      </div>
+      <div style="display: flex; gap: 24px; font-size: 9px"><span>Ronda {{simonRound}} / 6</span><span style="color: #f2c230">{{simonInfo}}</span></div>
+      <div style="display: flex; gap: 12px">
+        <sc-if value="{{ simonCanStart }}" hint-placeholder-val="{{ true }}">
+          <button type="button" onClick="{{ simonStart }}" style="padding: 12px 16px; background: #e8424b; border: 4px solid #f5ecd8; font-family: 'Press Start 2P', monospace; font-size: 9px; color: #ffffff; cursor: pointer">{{simonStartLabel}}</button>
+        </sc-if>
+        <button type="button" onClick="{{ simonClose }}" style="padding: 12px 16px; background: #f5ecd8; border: 4px solid #f5ecd8; font-family: 'Press Start 2P', monospace; font-size: 9px; color: #1b1b24; cursor: pointer">SALIR</button>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- Ágora: cazador de ofertas -->
+  <sc-if value="{{ shopOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; inset: 0; background: rgba(20,10,30,0.66); z-index: 45"></div>
+    <div style="position: absolute; left: 90px; top: 20px; width: 780px; padding: 16px; box-sizing: border-box; background: #2a1e2e; border: 6px solid #f2c230; color: #f5ecd8; display: flex; flex-direction: column; align-items: center; gap: 10px; z-index: 46">
+      <div style="display: flex; gap: 24px; font-size: 10px; align-items: center"><span style="color: #f2c230">Cazador de ofertas</span><span>{{shopTime}} s</span><span>Bolsas {{shopCaught}}</span></div>
+      <div onPointerDown="{{ shopPointer }}" onPointerMove="{{ shopPointer }}" style="position: relative; width: 720px; height: 360px; overflow: hidden; border: 4px solid #0e0a14; touch-action: none; cursor: none">
+        <img src="./assets/b375b6dfad1aeb1d6b599c3127587af1.png" alt="" draggable="false" style="position: absolute; left: -120px; top: -40px; width: 960px; height: 540px; image-rendering: pixelated; opacity: 0.55; pointer-events: none">
+        <sc-for list="{{ shopBags }}" as="bg" hint-placeholder-count="3">
+          <div style="position: absolute; left: {{bg.left}}px; top: {{bg.top}}px; width: 4px; height: 4px; box-shadow: {{bg.sprite}}; pointer-events: none"></div>
+        </sc-for>
+        <div style="position: absolute; left: {{cartLeft}}px; top: 300px; width: 4px; height: 4px; box-shadow: {{cartSprite}}; pointer-events: none"></div>
+        <sc-if value="{{ shopOver }}" hint-placeholder-val="{{ false }}">
+          <div style="position: absolute; left: 160px; top: 110px; width: 400px; padding: 18px; box-sizing: border-box; background: #1b1b24; border: 4px solid #f2c230; text-align: center; font-size: 10px; line-height: 18px">{{shopResult}}</div>
+        </sc-if>
+      </div>
+      <span style="font-size: 8px">Mueve el dedo o el mouse sobre la plaza para mover el carrito.</span>
+      <div style="display: flex; gap: 12px">
+        <sc-if value="{{ shopCanStart }}" hint-placeholder-val="{{ true }}">
+          <button type="button" onClick="{{ shopStart }}" style="padding: 12px 16px; background: #e8424b; border: 4px solid #f5ecd8; font-family: 'Press Start 2P', monospace; font-size: 9px; color: #ffffff; cursor: pointer">{{shopStartLabel}}</button>
+        </sc-if>
+        <button type="button" onClick="{{ shopClose }}" style="padding: 12px 16px; background: #f5ecd8; border: 4px solid #f5ecd8; font-family: 'Press Start 2P', monospace; font-size: 9px; color: #1b1b24; cursor: pointer">SALIR</button>
+      </div>
+    </div>
+  </sc-if>
+
   <!-- panel de la carrera -->
   <sc-if value="{{ showRunPanel }}" hint-placeholder-val="{{ false }}">
     <div style="position: absolute; inset: 0; background: rgba(10,20,30,0.5); z-index: 45"></div>
@@ -724,11 +802,49 @@ class Component extends DCLogic {
       { id: 'cine', name: 'Cine', color: '#2a5aa8', mx: 506, my: 186, go: { scene: 'lobby', x: 200, fy: 500 } },
       { id: 'plaza', name: 'Plaza de Uruapan', color: '#f2c230', mx: 352, my: 268, go: { scene: 'plaza' } },
       { id: 'cerro', name: 'Cerro de Jicalán', color: '#6a8a2a', mx: 112, my: 360, go: { scene: 'cerro', x: 300, fy: 1250 } },
-      { id: 'park', name: 'Parque La Pinera', color: '#3a9a5a', mx: 236, my: 392, go: { scene: 'park', x: 480, fy: 500 } }
+      { id: 'park', name: 'Parque La Pinera', color: '#3a9a5a', mx: 236, my: 392, go: { scene: 'park', x: 480, fy: 500 } },
+      { id: 'agora', name: 'Plaza Ágora', color: '#c84ad8', mx: 420, my: 236, go: { scene: 'agoraOut' } }
     ];
+    // Ágora: fuente de los deseos y cazador de ofertas
+    this.simonColors = ['#ff7ad8', '#4ad8e8', '#f2d24a', '#5ad86a'];
+    this.bags = [];
+    Object.assign(this.state, { simonOpen: false, simonPhase: 'ready', simonSeq: [], simonIdx: 0, showT: 0, litPad: -1, litT: -10, simonWon: 0,
+      shopOpen: false, shopPhase: 'ready', shopT: 0, shopCaught: 0, cartX: 360, shopSpawn: 0, shopWon: 0 });
+    this.enterAgora = () => this.setState({ scene: 'agora', x: 480, fy: 470, fade: 1 });
+    this.simonStart = () => this.setState({ simonPhase: 'show', simonSeq: [Math.floor(Math.random() * 4)], simonIdx: 0, showT: -0.5, litPad: -1, simonWon: 0 });
+    this.simonPress = (n) => {
+      const s = this.state;
+      if (s.simonPhase !== 'input') return;
+      const seq = s.simonSeq;
+      if (seq[s.simonIdx] !== n) {
+        const won = (seq.length - 1) * 5;
+        this.setState({ simonPhase: 'fail', litPad: n, litT: s.t, coins: s.coins + won, simonWon: won });
+        return;
+      }
+      const idx = s.simonIdx + 1;
+      if (idx < seq.length) { this.setState({ simonIdx: idx, litPad: n, litT: s.t }); return; }
+      if (seq.length >= 6) { this.setState({ simonPhase: 'win', litPad: n, litT: s.t, coins: s.coins + 40, simonWon: 40 }); return; }
+      this.setState({ simonPhase: 'show', simonSeq: seq.concat([Math.floor(Math.random() * 4)]), simonIdx: 0, showT: -0.7, litPad: n, litT: s.t });
+    };
+    this.simonClose = () => this.setState({ simonOpen: false, simonPhase: 'ready' });
+    this.shopStart = () => { this.bags = []; this.setState({ shopPhase: 'play', shopT: 0, shopCaught: 0, shopSpawn: 0.3, shopWon: 0 }); };
+    this.shopPointer = (e) => {
+      const r = e.currentTarget.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width * 720;
+      this.setState({ cartX: Math.max(40, Math.min(680, x)) });
+    };
+    this.shopClose = () => { this.bags = []; this.setState({ shopOpen: false, shopPhase: 'ready' }); };
     this.terrenoPlace = { id: 'terreno', name: 'Mi terreno', color: '#a86a2a', mx: 520, my: 372 };
     this.terrenoPrice = 600;
     Object.assign(this.state, { terreno: false, swingOpen: false, swingAmp: 10, swingPhase: 0, swingDone: false, swingMsg: '', swingMsgT: -10, slideT: -1, slideCD: 0 });
+    this.resetProgress = () => {
+      const s = this.state;
+      if (!s.confirmReset) { this.setState({ confirmReset: true, confirmResetT: s.t }); return; }
+      try { window.localStorage.removeItem('paseo-pixel-avance'); } catch (err) {}
+      this.pathCoins.forEach((c) => { c.got = false; });
+      this._lastSave = null;
+      this.setState({ coins: 0, money: 500, hasMoto: false, catUnlocked: false, terreno: false, memoWins: 0, runBest: 0, score: 0, throws: 0, cafePrize: false, popcorn: null, combo: null, confirmReset: false, loadedSave: false });
+    };
     this.buyTerreno = () => {
       const s = this.state;
       if (s.terreno || s.coins < this.terrenoPrice) return;
@@ -763,7 +879,8 @@ class Component extends DCLogic {
     };
     this.goMap = () => {
       this.obs = []; this.bananas = [];
-      this.setState({ scene: 'map', fade: 1, mapNote: '', swingOpen: false, slideT: -1, menuOpen: false, tttOpen: false, shellOpen: false, memoOpen: false, gymOpen: false, holding: false, game: 'intro', runState: 'intro' });
+      this.bags = [];
+      this.setState({ scene: 'map', fade: 1, mapNote: '', swingOpen: false, simonOpen: false, shopOpen: false, slideT: -1, menuOpen: false, tttOpen: false, shellOpen: false, memoOpen: false, gymOpen: false, holding: false, game: 'intro', runState: 'intro' });
     };
     this.redeemMoto = () => {
       const s = this.state;
@@ -829,6 +946,9 @@ class Component extends DCLogic {
         this.setState({ menuOpen: true });
       } else if (s.scene === 'plaza') {
         this.jump();
+      } else if (s.scene === 'agora') {
+        if (s.x < 220) { this.bags = []; this.setState({ shopOpen: true, shopPhase: 'ready', shopCaught: 0, shopT: 0 }); }
+        else this.setState({ simonOpen: true, simonPhase: 'ready', simonSeq: [], simonIdx: 0 });
       } else if (s.scene === 'park') {
         if (s.x > 720) this.setState({ swingOpen: true, swingAmp: 10, swingPhase: 0, swingDone: false, swingMsg: '' });
         else if (s.slideT < 0 && s.slideCD <= 0) this.setState({ slideT: 0 });
@@ -932,7 +1052,36 @@ class Component extends DCLogic {
     this.setState({ kx: dx, ky: dy });
   }
 
+  // ===== Guardado del avance (se queda en el navegador de cada jugador) =====
+  saveKeys() {
+    return ['coins', 'money', 'hasMoto', 'catUnlocked', 'terreno', 'memoWins', 'runBest', 'score', 'throws', 'cafePrize', 'popcorn', 'combo'];
+  }
+
+  loadProgress() {
+    let data = null;
+    try { data = JSON.parse(window.localStorage.getItem('paseo-pixel-avance') || 'null'); } catch (err) { data = null; }
+    if (!data || typeof data !== 'object') return;
+    const up = {};
+    for (const k of this.saveKeys()) if (k in data) up[k] = data[k];
+    if (Array.isArray(data.pathCoinsGot)) data.pathCoinsGot.forEach((i) => { if (this.pathCoins[i]) this.pathCoins[i].got = true; });
+    up.loadedSave = true;
+    this.setState(up);
+  }
+
+  saveProgress() {
+    const s = this.state, data = {};
+    for (const k of this.saveKeys()) data[k] = s[k];
+    data.pathCoinsGot = this.pathCoins.map((c, i) => (c.got ? i : -1)).filter((i) => i >= 0);
+    const json = JSON.stringify(data);
+    if (json === this._lastSave) return;
+    try { window.localStorage.setItem('paseo-pixel-avance', json); this._lastSave = json; } catch (err) {}
+  }
+
   componentDidMount() {
+    this.loadProgress();
+    this.saveTimer = setInterval(() => this.saveProgress(), 1500);
+    this.onHide = () => this.saveProgress();
+    window.addEventListener('pagehide', this.onHide);
     this.last = null;
     const tick = (now) => {
       if (this.last == null) this.last = now;
@@ -944,7 +1093,7 @@ class Component extends DCLogic {
     this.raf = requestAnimationFrame(tick);
   }
 
-  componentWillUnmount() { cancelAnimationFrame(this.raf); clearTimeout(this.ratTimer); clearTimeout(this.memoTimer); }
+  componentWillUnmount() { this.saveProgress(); clearInterval(this.saveTimer); window.removeEventListener('pagehide', this.onHide); cancelAnimationFrame(this.raf); clearTimeout(this.ratTimer); clearTimeout(this.memoTimer); }
 
   heroH(fy, scene) {
     const sc = scene || this.state.scene;
@@ -953,6 +1102,7 @@ class Component extends DCLogic {
     if (sc === 'lobby') return 104 + (fy - 420) / 116 * 40;
     if (sc === 'sala') return 150;
     if (sc === 'mcd') return 200;
+    if (sc === 'agora') return 92 + (fy - 385) / 151 * 62;
     if (sc === 'park') return 96 + (fy - 380) / 156 * 54;
     if (sc === 'gym') return 120 + (fy - 440) / 96 * 30;
     if (sc === 'cerro') return 55 + (fy - 520) / 750 * 105;
@@ -966,6 +1116,7 @@ class Component extends DCLogic {
     if (scene === 'sala') return [534, 534];
     if (scene === 'mcd') return [526, 538];
     if (scene === 'park') return [380, 536];
+    if (scene === 'agora') return [385, 536];
     if (scene === 'gym') return [440, 536];
     if (scene === 'cerro') return [600, 1272];
     return [330, 538];
@@ -975,6 +1126,7 @@ class Component extends DCLogic {
     let rects = [];
     if (scene === 'street') rects = [[812, 868, 360, 386]];
     else if (scene === 'bowl') rects = [[250, 335, 395, 480], [40, 315, 470, 545], [712, 805, 388, 470], [740, 945, 470, 545], [466, 534, 482, 545]];
+    else if (scene === 'agora') rects = [[860, 960, 425, 545]];
     else if (scene === 'gym') rects = [[30, 395, 440, 498]];
     else if (scene === 'lobby') rects = [[0, 300, 420, 468], [330, 392, 420, 506]];
     else if (scene === 'cafe') {
@@ -994,7 +1146,7 @@ class Component extends DCLogic {
     if (s.scene === 'map') { this.setState({ fade: Math.max(0, s.fade - dt * 2.5), t: s.t + dt }); return; }
     if (s.shellOpen) this.stepShell(dt);
     if (s.scene === 'plaza') { this.stepRun(dt); return; }
-    const frozen = s.menuOpen || s.tttOpen || s.shellOpen || s.memoOpen || s.gymOpen || s.swingOpen || s.slideT >= 0 || (scene === 'sala' && s.game !== 'play');
+    const frozen = s.menuOpen || s.tttOpen || s.shellOpen || s.memoOpen || s.gymOpen || s.swingOpen || s.simonOpen || s.shopOpen || scene === 'agoraOut' || s.slideT >= 0 || (scene === 'sala' && s.game !== 'play');
     const moving = mag > 0.15 && fade < 0.6 && !frozen;
     if (moving) {
       const h = this.heroH(fy, scene);
@@ -1040,6 +1192,37 @@ class Component extends DCLogic {
     if (scene === 'cerro') {
       for (const c of this.pathCoins) {
         if (!c.got && Math.abs(c.x - x) < 34 && Math.abs(c.fy - fy) < 30) { c.got = true; up.coins = (up.coins ?? s.coins) + 5; up.coinFlashT = s.t; }
+      }
+    }
+    // fuente: mostrar la secuencia
+    if (s.simonOpen && s.simonPhase === 'show') {
+      const st = s.showT + dt;
+      const step = Math.floor(st / 0.62);
+      if (st < 0) up.litPad = -1;
+      else if (step >= s.simonSeq.length) { up.simonPhase = 'input'; up.simonIdx = 0; up.litPad = -1; }
+      else up.litPad = (st - step * 0.62) < 0.42 ? s.simonSeq[step] : -1;
+      up.showT = st;
+    }
+    // cazador de ofertas
+    if (s.shopOpen && s.shopPhase === 'play') {
+      const shopT = s.shopT + dt;
+      let spawn = s.shopSpawn - dt, caught = s.shopCaught;
+      if (spawn <= 0) {
+        this.bags.push({ x: 20 + Math.random() * 660, y: -40, v: 150 + shopT * 6 + Math.random() * 60, c: Math.floor(Math.random() * 4) });
+        spawn = Math.max(0.32, 0.7 - shopT * 0.012);
+      }
+      const keep = [];
+      for (const b of this.bags) {
+        b.y += b.v * dt;
+        if (b.y + 36 >= 300 && b.y < 320 && Math.abs(b.x + 16 - s.cartX) < 46) { caught += 1; continue; }
+        if (b.y < 380) keep.push(b);
+      }
+      this.bags = keep;
+      up.shopT = shopT; up.shopSpawn = spawn; up.shopCaught = caught;
+      if (shopT >= 30) {
+        const won = caught + (caught >= 20 ? 10 : 0);
+        this.bags = [];
+        up.shopPhase = 'over'; up.shopWon = won; up.coins = (up.coins ?? s.coins) + won;
       }
     }
     // columpio
@@ -1313,6 +1496,8 @@ class Component extends DCLogic {
       monkeyIdle: this.shadowFrom(monkeyIdle, monkeyPal, 5, 14),
       monkeyThrow: this.shadowFrom(monkeyThrow, monkeyPal, 5, 14),
       banana: this.shadowFrom(banana, bananaPal, 4, 6),
+      bags: ['#e8424b', '#2a8ad8', '#f2c230', '#3ab86a'].map((c) => this.shadowFrom(['..KKKK..', '.K....K.', 'KBBBBBBK', 'KBWBBBBK', 'KBBBBBBK', 'KBBBBBBK', 'KBBBBBBK', 'KBBBBBBK', 'KKKKKKKK'], { K: '#1b1b24', B: c, W: '#ffffff' }, 4, 8)),
+      cart: this.shadowFrom(['KK..............', '.K..............', '.KKKKKKKKKKKKKKK', '..KSSSSSSSSSSSK.', '..KSWSSSSSSSSSK.', '...KSSSSSSSSSK..', '....KKKKKKKKK...', '....KK.....KK...'], { K: '#1b1b24', S: '#c8c8d0', W: '#ffffff' }, 5, 16),
       helper: this.shadowFrom(helper, helperPal, 5, 10)
     };
     return this._cache;
@@ -1321,7 +1506,7 @@ class Component extends DCLogic {
   renderVals() {
     const s = this.state, sp = this.sprites();
     const street = s.scene === 'street', cafe = s.scene === 'cafe', bowl = s.scene === 'bowl';
-    const isMap = s.scene === 'map', park = s.scene === 'park';
+    const isMap = s.scene === 'map', park = s.scene === 'park', agora = s.scene === 'agora', agoraOut = s.scene === 'agoraOut';
     if (this._lc === undefined) this._lc = s.coins;
     if (s.coins > this._lc) this._toast = { n: s.coins - this._lc, t: s.t };
     this._lc = s.coins;
@@ -1345,6 +1530,8 @@ class Component extends DCLogic {
     const nearCounter = lobby && cx > 470 && fy < 470;
     const nearStand = cerro && Math.hypot(cx - 525, fy - 690) < 120;
     const nearBench = gym && cx > 600 && fy < 520;
+    const nearFountain = agora && cx > 220 && cx < 820 && fy < 440;
+    const nearShops = agora && cx < 220 && fy < 470;
     const nearSwing = park && cx > 720 && cx < 940 && fy < 530;
     const nearSlide = park && cx < 230 && fy > 430;
     const nearMoto = cerro && s.hasMoto && Math.hypot(cx - 703, fy - 712) < 90;
@@ -1366,6 +1553,10 @@ class Component extends DCLogic {
       else if (fy >= 520) msg = '↓ Sigue bajando para ir al gimnasio';
     } else if (mcd) {
       if (cx < 110) msg = '← Salir a la calle';
+    } else if (agora) {
+      if (nearFountain) msg = 'Fuente de los deseos · repite las luces y gana hasta 40 monedas';
+      else if (nearShops) msg = 'Cazador de ofertas · atrapa bolsas durante 30 segundos';
+      else msg = 'Acércate a la fuente o a las tiendas de la izquierda';
     } else if (park) {
       if (nearSwing) msg = 'Columpio · impulsa en el momento justo y gana 30 monedas';
       else if (nearSlide) msg = s.slideCD > 0 ? '¡Wiii! Espera un momento para volver a subir' : 'Resbaladilla · cada bajada da 3 monedas';
@@ -1461,6 +1652,27 @@ class Component extends DCLogic {
     if (plaza) place = 'Plaza de Uruapan';
     if (gym) place = 'Gimnasio';
     if (park) place = 'Parque La Pinera';
+    if (agora || agoraOut) place = 'Plaza Ágora';
+    const jets = agora ? [300, 352, 404, 560, 612, 664].map((jx, i) => {
+      const hh = Math.round(10 + 8 * (0.5 + 0.5 * Math.sin(s.t * 3 + i * 1.3)));
+      return { left: jx, top: 318 - hh, h: hh, op: (0.45 + 0.25 * Math.sin(s.t * 3 + i)).toFixed(2) };
+    }) : [];
+    const lit = s.simonPhase === 'show' ? s.litPad : (s.t - s.litT < 0.25 ? s.litPad : -1);
+    const simonPads = this.simonColors.map((c, n) => ({
+      n: n + 1,
+      bg: lit === n ? c : '#24485a',
+      glow: lit === n ? '0 0 0 4px #ffffff' : 'none',
+      jet: lit === n ? 110 : 26,
+      jetColor: lit === n ? '#ffffff' : c,
+      press: () => this.simonPress(n)
+    }));
+    let simonInfo = '';
+    if (s.simonPhase === 'show') simonInfo = 'Mira con atención...';
+    if (s.simonPhase === 'input') simonInfo = 'Tu turno: ' + s.simonIdx + ' / ' + s.simonSeq.length;
+    if (s.simonPhase === 'fail') simonInfo = 'Te equivocaste. Ganaste ' + s.simonWon + ' monedas.';
+    if (s.simonPhase === 'win') simonInfo = '¡Deseo cumplido! +40 monedas.';
+    let shopResult = '';
+    if (s.shopPhase === 'over') shopResult = 'Atrapaste ' + s.shopCaught + ' bolsas. Ganaste ' + s.shopWon + ' monedas' + (s.shopCaught >= 20 ? ' (incluye bono de 10).' : '.');
     // resbaladilla: el personaje baja por la rampa
     let slideOverride = null;
     if (park && s.slideT >= 0) {
@@ -1574,6 +1786,8 @@ class Component extends DCLogic {
     if (plaza && s.runState === 'play') { showAction = true; actionLabel = 'BRINCAR'; }
     else if (nearMoto) { showAction = true; actionLabel = 'MONTAR'; }
     else if (nearBench && !s.gymOpen) { showAction = true; actionLabel = 'ENTRENAR'; }
+    else if (nearFountain && !s.simonOpen) { showAction = true; actionLabel = 'FUENTE'; }
+    else if (nearShops && !s.shopOpen) { showAction = true; actionLabel = 'OFERTAS'; }
     else if (nearSwing && !s.swingOpen) { showAction = true; actionLabel = 'COLUMPIO'; }
     else if (nearSlide && s.slideT < 0 && s.slideCD <= 0) { showAction = true; actionLabel = 'RESBALAR'; }
     else if (atDoor) { showAction = true; actionLabel = 'ENTRAR'; }
@@ -1595,7 +1809,7 @@ class Component extends DCLogic {
       shellStart: this.shellStart, shellClose: this.shellClose,
       showCafePrize: s.cafePrize && cafe,
       inGym: gym,
-      showCat: s.catUnlocked && !plaza && !isMap,
+      showCat: s.catUnlocked && !plaza && !isMap && !agoraOut,
       catLeft, catTop, catW, catH, catFace: s.catFace,
       catZ: charZ + (s.catFy > s.fy ? 1 : -1),
       catMeow: s.catUnlocked && !catMoving && !plaza && Math.floor(s.t) % 7 === 0,
@@ -1635,7 +1849,7 @@ class Component extends DCLogic {
       canRedeem: s.coins >= 300 && !s.hasMoto,
       memoCanNew: s.memoDone,
       memoNew: this.memoNew, memoClose: this.memoClose, redeemMoto: this.redeemMoto,
-      inMap: isMap, notMap: !isMap, showJoy: !isMap,
+      inMap: isMap, notMap: !isMap && !agoraOut, showJoy: !isMap && !agoraOut,
       pins: this.places.concat(s.terreno ? [this.terrenoPlace] : []).map((pl, i) => ({
         name: pl.name, color: pl.color,
         left: pl.mx - 14, top: pl.my - 36 + (Math.floor(s.t * 2 + i) % 2 ? -3 : 0),
@@ -1643,7 +1857,22 @@ class Component extends DCLogic {
         sprite: this.pinSprite(pl.color),
         go: () => this.goTo(pl)
       })),
+      resetProgress: this.resetProgress,
+      resetLabel: s.confirmReset && s.t - s.confirmResetT < 4 ? '¿SEGURO? TOCA OTRA VEZ' : 'BORRAR AVANCE',
+      saveNote: s.loadedSave ? 'Tu avance se guarda solo en este navegador.' : 'Tu avance se guarda solo en este navegador.',
       showMapNote: isMap && !!s.mapNote, mapNote: s.mapNote, goMap: this.goMap,
+      inAgora: agora, inAgoraOut: agoraOut, enterAgora: this.enterAgora, jets,
+      simonOpen: s.simonOpen, simonPads, simonInfo,
+      simonRound: Math.max(1, s.simonSeq.length),
+      simonCanStart: s.simonPhase === 'ready' || s.simonPhase === 'fail' || s.simonPhase === 'win',
+      simonStartLabel: s.simonPhase === 'ready' ? 'EMPEZAR' : 'OTRA VEZ',
+      simonStart: this.simonStart, simonClose: this.simonClose,
+      shopOpen: s.shopOpen, shopTime: Math.max(0, Math.ceil(30 - s.shopT)), shopCaught: s.shopCaught,
+      shopBags: s.shopOpen ? this.bags.map((b) => ({ left: Math.round(b.x) - 4, top: Math.round(b.y) - 4, sprite: sp.bags[b.c] })) : [],
+      cartLeft: Math.round(s.cartX) - 40 - 5, cartSprite: sp.cart,
+      shopOver: s.shopPhase === 'over', shopResult,
+      shopCanStart: s.shopPhase !== 'play', shopStartLabel: s.shopPhase === 'ready' ? 'EMPEZAR' : 'OTRA VEZ',
+      shopStart: this.shopStart, shopPointer: this.shopPointer, shopClose: this.shopClose,
       inPark: park,
       slideZ: fy > 470 ? 4 : 8, swingZ: fy > 480 ? 4 : 8,
       swingOpen: s.swingOpen, swingAngle: swingAngle.toFixed(1),
@@ -1677,13 +1906,13 @@ class Component extends DCLogic {
       heroSrc: this.hero[key],
       heroLeft: (slideOverride ? Math.round(slideOverride.x) : cx) - Math.round(w / 2),
       heroTop: (slideOverride ? Math.round(slideOverride.fy) : fy) - h + bob - camY,
-      heroW: hurtBlink || plaza || isMap ? 0 : w,
+      heroW: hurtBlink || plaza || isMap || agoraOut ? 0 : w,
       heroH: h,
       face: s.face,
       charZ: slideOverride ? 9 : charZ,
       shadowLeft: Math.round(cx - w * 0.5),
       shadowTop: Math.round(fy - h * 0.04) - camY,
-      shadowW: plaza || isMap ? 0 : Math.round(w),
+      shadowW: plaza || isMap || agoraOut ? 0 : Math.round(w),
       shadowH: Math.max(6, Math.round(h * 0.07)),
       hamTop: 309 + (Math.floor(s.t * 2.5) % 2 ? -2 : 0),
       showHamTalk: nearHam,
@@ -1718,7 +1947,7 @@ class Component extends DCLogic {
       panelTitle, panelText, startLabel,
       showExit: s.game !== 'intro',
       startGame: this.startGame, leaveSala: this.leaveSala,
-      showMsg: msg !== "" && !nearHam && !nearBarista && !s.menuOpen && !s.tttOpen && !s.shellOpen && !s.memoOpen && !s.gymOpen && !s.swingOpen && !plaza,
+      showMsg: msg !== "" && !nearHam && !nearBarista && !s.menuOpen && !s.tttOpen && !s.shellOpen && !s.memoOpen && !s.gymOpen && !s.swingOpen && !s.simonOpen && !s.shopOpen && !plaza,
       msg, showAction, actionLabel,
       doAction: this.doAction,
       fade: s.fade.toFixed(2),
